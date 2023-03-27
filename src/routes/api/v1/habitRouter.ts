@@ -15,6 +15,9 @@ router.get('/', (req: Request, res: Response, next: NextFunction) => {
   console.log('Hello from habitRouter.ts');
   resolveHabitController(req).test(req, res, next) });
 
+// POST habits
+router.post('/', (req: Request, res: Response, next: NextFunction) => resolveHabitController(req).create(req, res, next));
+
 /*
 // Provide req.task to the route if :id is present in the route path.
 router.param('id', (req: Request, res: Response, next: NextFunction, id: string) => resolveHabitController(req).loadTask(req, res, next, id));

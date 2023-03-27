@@ -19,28 +19,17 @@ export class HabitController {
   async create(req: Request, res: Response, next: NextFunction) {
     try {
 
-      const habit: IHabit = new HabitModel({
-        description: "My Habit",
+      const result: IHabit = await this.#service.insert({
+        description: "Brush teeth",
         dailyLogs: [
           {
             date: new Date('2023-03-27'),
             done: true,
           },
         ],
-      })
-
-      const result = await this.#service.insert(habit)
+      } as IHabit)
+      res.status(201).json(result)
       /*
-
-      description: string
-  dailyLogs: {
-    date: Date
-    done: boolean
-  }[]
-      const task = await this.#service.insert({
-        description: req.body.description,
-        done: req.body.done,
-      })
       const location = new URL(
         `${req.protocol}://${req.get('host')}${req.baseUrl}/${task._id}`
       )
