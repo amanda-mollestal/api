@@ -1,8 +1,7 @@
 import { Document, Model, Schema, model } from 'mongoose';
 
-// Define a habit document.
 export interface IHabit extends Document {
-  tree?: Record<string, any>,
+  tree?: Record<string, any>;
   description: string;
   dailyLogs: {
     date: Date;
@@ -10,37 +9,30 @@ export interface IHabit extends Document {
   }[];
 }
 
-// Define a habit model.
-export interface IHabitModel extends Model<IHabit> {}
-
-export interface MySchema<T extends Document> extends Schema<T> {
-  tree?: Record<string, any>;
-}
-
-// Create a schema.
- const schema: MySchema<IHabit> = new Schema<IHabit>({
+const habitSchema = new Schema<IHabit>({
   description: {
     type: String,
     required: true,
     trim: true,
-    minlength: 1
+    minlength: 1,
   },
-  dailyLogs: [{
-    date: {
-      type: Date,
-      required: true,
-      unique: true
+  dailyLogs: [
+    {
+      date: {
+        type: Date,
+        required: true,
+        unique: true,
+      },
+      done: {
+        type: Boolean,
+        required: true,
+        default: false,
+      },
     },
-    done: {
-      type: Boolean,
-      required: true,
-      default: false
-    }
-  }]
+  ],
 });
 
-
-schema.virtual('id').get(function (this: IHabit) {
+habitSchema.virtual('id').get(function (this: IHabit) {
   return this._id.toHexString();
 });
 
@@ -58,9 +50,12 @@ const convertOptions = {
   },
 };
 
-schema.set('timestamps', true);
-schema.set('toObject', convertOptions);
-schema.set('toJSON', convertOptions);
+habitSchema.set('timestamps', true);
+habitSchema.set('toObject', convertOptions);
+habitSchema.set('toJSON', convertOptions);
 
-// Create a model using the schema.
-export const HabitModel: IHabitModel = model<IHabit, IHabitModel>('Habit', schema)
+export interface IHabitModel extends Model<IHabit> {}
+
+export const HabitModel: IHabitModel = model<IHabit, IHabitModel>('Habit', habitSchema);
+
+
