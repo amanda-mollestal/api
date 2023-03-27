@@ -19,11 +19,15 @@ export class HabitController {
   async create(req: Request, res: Response, next: NextFunction) {
     try {
 
+      const date = new Date()
+
+      console.log(date.toLocaleDateString())
+
       const result: IHabit = await this.#service.insert({
         description: "Brush teeth",
         dailyLogs: [
           {
-            date: new Date('2023-03-27'),
+            date: date.toLocaleDateString(),
             done: true,
           },
         ],
@@ -64,14 +68,14 @@ async loadTask(req: Request, res: Response, next: NextFunction, id: string) {
 
 async find(req: Request, res: Response, next: NextFunction) {
   res.json(req.task)
-}
+} */
 
 async findAll(req: Request, res: Response, next: NextFunction) {
   try {
-    const tasks = await this.#service.get()
-    res.json(tasks)
+    const habits = await this.#service.get()
+    res.json(habits)
   } catch (error) {
     next(error)
   }
-}*/
+}
 }

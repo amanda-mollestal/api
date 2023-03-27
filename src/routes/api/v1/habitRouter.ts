@@ -13,7 +13,7 @@ const resolveHabitController = (req: Request) => req.app.get('container').resolv
 // GET 
 router.get('/', (req: Request, res: Response, next: NextFunction) => {
   console.log('Hello from habitRouter.ts');
-  resolveHabitController(req).test(req, res, next) });
+  resolveHabitController(req).findAll(req, res, next) });
 
 // POST habits
 router.post('/', (req: Request, res: Response, next: NextFunction) => resolveHabitController(req).create(req, res, next));

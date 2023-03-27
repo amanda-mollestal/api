@@ -4,8 +4,9 @@ export interface IHabit extends Document {
   //tree?: Record<string, any>
   description: string
   dailyLogs: {
-    date: Date
+    date: string
     done: boolean
+    id: string
   }[]
 }
 
@@ -19,7 +20,7 @@ const habitSchema = new Schema<IHabit>({
   dailyLogs: [
     {
       date: {
-        type: Date,
+        type: String,
         required: true,
         unique: true,
       },
@@ -28,6 +29,12 @@ const habitSchema = new Schema<IHabit>({
         required: true,
         default: false,
       },
+      id: {
+        type: String,
+        default: function(this: any) {
+          return this._id.toHexString();
+        },
+      }
     },
   ],
 })
@@ -35,6 +42,14 @@ const habitSchema = new Schema<IHabit>({
 habitSchema.virtual('id').get(function (this: IHabit) {
   return this._id.toHexString()
 })
+
+/*
+habitSchema.virtual('').get(function (this: IHabit) {
+  //this.dailyLogs.forEach((log: any) => log.id = log._id.toHexString())
+  return this._id.toHexString()
+})*/ 
+
+
 
 const convertOptions = {
   virtuals: true,
@@ -47,6 +62,7 @@ const convertOptions = {
    */
   transform: (doc: any, ret: any) => {
     delete ret._id
+    ret.dailyLogs.forEach((log: any) => delete log._id)
   },
 }
 

@@ -26,7 +26,7 @@ export class MongooseServiceBase<T extends Document> {
    *
    * @returns {Promise<object>} Promise resolved with all documents.
    */
-  async get(filter: any, projection: any = null, options: any = null): Promise<T[]> {
+  async get(filter: any = null, projection: any = null, options: any = null): Promise<T[]> {
     return this._repository.get(filter, projection, options)
   }
 
