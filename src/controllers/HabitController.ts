@@ -1,17 +1,42 @@
-import createError from 'http-errors';
-import { Request, Response, NextFunction } from 'express';
+import createError from 'http-errors'
+import { Request, Response, NextFunction } from 'express'
+import { HabitService } from '../services/HabitService'
+import { HabitModel, IHabit } from '../models/HabitModel'
 //import { TasksService } from '../services/TasksService'
 
-export class TasksController {
-  //#service: TasksService
+export class HabitController {
+  #service: HabitService
 
-  constructor() {
-    //this.#service = service
+  constructor(service: HabitService) {
+    this.#service = service
+  }
+
+  async test (req: Request, res: Response, next: NextFunction) {
+    console.log('Hello from HabitController')
+    res.json({ message: 'Hello from HabitController'})
   }
 
   async create(req: Request, res: Response, next: NextFunction) {
     try {
+
+      const habit: IHabit = new HabitModel({
+        description: "My Habit",
+        dailyLogs: [
+          {
+            date: new Date('2023-03-27'),
+            done: true,
+          },
+        ],
+      })
+
+      const result = await this.#service.insert(habit)
       /*
+
+      description: string
+  dailyLogs: {
+    date: Date
+    done: boolean
+  }[]
       const task = await this.#service.insert({
         description: req.body.description,
         done: req.body.done,
@@ -31,33 +56,33 @@ export class TasksController {
     }
   }
 
-    /*
-  async loadTask(req: Request, res: Response, next: NextFunction, id: string) {
-    try {
-      const task = await this.#service.getById(id)
+  /*
+async loadTask(req: Request, res: Response, next: NextFunction, id: string) {
+  try {
+    const task = await this.#service.getById(id)
 
-      if (!task) {
-        next(createError(404, 'The requested resource was not found.'))
-        return
-      }
-
-      req.task = task
-      next()
-    } catch (error) {
-      next(error)
+    if (!task) {
+      next(createError(404, 'The requested resource was not found.'))
+      return
     }
-  }
 
-  async find(req: Request, res: Response, next: NextFunction) {
-    res.json(req.task)
+    req.task = task
+    next()
+  } catch (error) {
+    next(error)
   }
+}
 
-  async findAll(req: Request, res: Response, next: NextFunction) {
-    try {
-      const tasks = await this.#service.get()
-      res.json(tasks)
-    } catch (error) {
-      next(error)
-    }
-  }*/
+async find(req: Request, res: Response, next: NextFunction) {
+  res.json(req.task)
+}
+
+async findAll(req: Request, res: Response, next: NextFunction) {
+  try {
+    const tasks = await this.#service.get()
+    res.json(tasks)
+  } catch (error) {
+    next(error)
+  }
+}*/
 }

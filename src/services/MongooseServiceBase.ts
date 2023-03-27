@@ -1,5 +1,5 @@
-import { Document } from 'mongoose';
-import { MongooseRepositoryBase } from '../repositoires/MongooseRepository';
+import { Document } from 'mongoose'
+import { MongooseRepositoryBase } from '../repositoires/MongooseRepository'
 
 /**
  * Encapsulates a Mongoose service base.
@@ -10,7 +10,7 @@ export class MongooseServiceBase<T extends Document> {
    *
    * @type {MongooseRepositoryBase}
    */
-  protected _repository: MongooseRepositoryBase<T>;
+  protected _repository: MongooseRepositoryBase<T>
 
   /**
    * Initializes a new instance.
@@ -18,7 +18,7 @@ export class MongooseServiceBase<T extends Document> {
    * @param {MongooseRepositoryBase} repository - A repository instantiated from a class inherited from MongooseRepositoryBase.
    */
   constructor(repository: MongooseRepositoryBase<T>) {
-    this._repository = repository;
+    this._repository = repository
   }
 
   /**
@@ -27,7 +27,7 @@ export class MongooseServiceBase<T extends Document> {
    * @returns {Promise<object>} Promise resolved with all documents.
    */
   async get(filter: any, projection: any = null, options: any = null): Promise<T[]> {
-    return this._repository.get(filter, projection, options);
+    return this._repository.get(filter, projection, options)
   }
 
   /**
@@ -47,7 +47,7 @@ export class MongooseServiceBase<T extends Document> {
    * @returns {Promise<T>} Promise resolved with the created document.
    */
   async insert(data: T): Promise<T> {
-    return this._repository.insert(data);
+    return this._repository.insert(data)
   }
 
   /**
@@ -79,6 +79,6 @@ export class MongooseServiceBase<T extends Document> {
    * @returns {Promise<T>} Promise resolved with the removed document.
    */
   async delete(id: string): Promise<T | null> {
-    return this._repository.delete(id, {});
+    return this._repository.delete(id, {})
   }
 }

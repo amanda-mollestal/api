@@ -4,6 +4,7 @@ import { router as v1Router } from './api/v1/router';
 
 export const router: Router = express.Router();
 
+
 router.use('/api/v1', v1Router);
 
 // Catch 404 (ALWAYS keep this as the last route).

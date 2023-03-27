@@ -1,12 +1,12 @@
-import { Document, Model, Schema, model } from 'mongoose';
+import { Document, Model, Schema, model } from 'mongoose'
 
 export interface IHabit extends Document {
-  tree?: Record<string, any>;
-  description: string;
+  //tree?: Record<string, any>
+  description: string
   dailyLogs: {
-    date: Date;
-    done: boolean;
-  }[];
+    date: Date
+    done: boolean
+  }[]
 }
 
 const habitSchema = new Schema<IHabit>({
@@ -30,11 +30,11 @@ const habitSchema = new Schema<IHabit>({
       },
     },
   ],
-});
+})
 
 habitSchema.virtual('id').get(function (this: IHabit) {
-  return this._id.toHexString();
-});
+  return this._id.toHexString()
+})
 
 const convertOptions = {
   virtuals: true,
@@ -46,15 +46,15 @@ const convertOptions = {
    * @param {object} ret - The plain object representation which has been converted.
    */
   transform: (doc: any, ret: any) => {
-    delete ret._id;
+    delete ret._id
   },
-};
+}
 
-habitSchema.set('timestamps', true);
-habitSchema.set('toObject', convertOptions);
-habitSchema.set('toJSON', convertOptions);
+habitSchema.set('timestamps', true)
+habitSchema.set('toObject', convertOptions)
+habitSchema.set('toJSON', convertOptions)
 
-export interface IHabitModel extends Model<IHabit> {}
+export interface IHabitModel extends Model<IHabit> { }
 
 export const HabitModel: IHabitModel = model<IHabit, IHabitModel>('Habit', habitSchema);
 
