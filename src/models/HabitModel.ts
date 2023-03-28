@@ -31,6 +31,7 @@ const habitSchema = new Schema<IHabit>({
       },
       id: {
         type: String,
+        required: true,
         default: function(this: any) {
           return this._id.toHexString();
         },
@@ -42,13 +43,6 @@ const habitSchema = new Schema<IHabit>({
 habitSchema.virtual('id').get(function (this: IHabit) {
   return this._id.toHexString()
 })
-
-/*
-habitSchema.virtual('').get(function (this: IHabit) {
-  //this.dailyLogs.forEach((log: any) => log.id = log._id.toHexString())
-  return this._id.toHexString()
-})*/ 
-
 
 
 const convertOptions = {
