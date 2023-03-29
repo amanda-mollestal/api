@@ -1,6 +1,6 @@
 import { Document, Model } from 'mongoose';
 
-export class MongooseRepositoryBase<T extends Document> {
+export class MongooseRepositoryBase<T> {
   /**
    * The Mongoose model.
    *

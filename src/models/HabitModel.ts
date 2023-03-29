@@ -56,6 +56,7 @@ const convertOptions = {
    */
   transform: (doc: any, ret: any) => {
     delete ret._id
+    delete ret.__v
     ret.dailyLogs.forEach((log: any) => delete log._id)
   },
 }

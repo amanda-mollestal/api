@@ -29,6 +29,7 @@ async function startServer(): Promise<void> {
 
     // Parse requests of the content type application/json.
     app.use(express.json())
+    app.use(express.urlencoded({ extended: true }))
 
     // Register routes.
     app.use('/', router)

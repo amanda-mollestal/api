@@ -11,11 +11,16 @@
 
 import { Document, Model, Schema, model } from 'mongoose'
 import bcrypt from 'bcrypt'
+import validator from 'validator'
 
 
 export interface IUser extends Document {
   username: string,
-  password: string
+  password: string,
+  email: string,
+  comparePassword: (password: string) => Promise<boolean>,
+  authentication: (username: string, password: string) => Promise<IUser | null>
+  
 }
 
 const userSchema = new Schema<IUser>({
@@ -31,7 +36,15 @@ const userSchema = new Schema<IUser>({
     minlength: [10, 'Password have to be 10 or more characters'],
     maxlength: [256, 'Password can only contain up to 256 characters'],
     writeOnly: true
+  },
+  email: {
+    type: String,
+    unique: true,
+    required: [true, 'You have to enter a valid email adress'],
+    validate: [validator.isEmail, 'The email you entered is not a valid email adress'],
+    maxlength: [254, 'Email can only contain up to 256 characters']
   }
+
 })
 
 function validateUsername(username: string): boolean {
@@ -41,7 +54,8 @@ function validateUsername(username: string): boolean {
 
 // Hash password and trim username before saving
 userSchema.pre<IUser>('save', async function (next) {
-  this.username = trimUsername(this.username)
+  this.username = trimString(this.username)
+  this.email = trimString(this.email)
   if (this.isModified('password') || this.isNew) {
   
     const salt = await bcrypt.genSalt(12)
@@ -52,7 +66,7 @@ userSchema.pre<IUser>('save', async function (next) {
   next()
 })
 
-function trimUsername(value: string): string {
+function trimString(value: string): string {
   if (typeof value !== 'string') {
     return value;
   }
@@ -78,7 +92,7 @@ userSchema.statics.authentication = async function (username: string, password: 
   }
 
   // User found and password correct, return the user.
-  return user
+  return user as IUser
 }
 
 
@@ -96,6 +110,7 @@ const convertOptions = {
     delete ret._id
     delete ret.password
     delete ret.__v
+    delete ret.updatedAt
   },
 }
 
@@ -112,7 +127,7 @@ userSchema.set('toJSON', convertOptions)
 userSchema.post<IUser>('save', function (error: any, doc: IUser, next: any) {
   if (error.code === 11000) {
     error.status = 409
-    error.message = 'Username in use'
+    error.message = 'Username or email in use'
     next(error)
   }
 
@@ -122,6 +137,8 @@ userSchema.post<IUser>('save', function (error: any, doc: IUser, next: any) {
       error.message = error.errors.username.properties.message
     } else if (error.errors.password) {
       error.message = error.errors.password.properties.message
+    } else if (error.errors.email) {
+      error.message = error.errors.email.properties.message
     }
     next(error)
   }
@@ -131,6 +148,7 @@ userSchema.post<IUser>('save', function (error: any, doc: IUser, next: any) {
 
 export interface IUserModel extends Model<IUser> {
   comparePassword(password: string): Promise<boolean>
+  authentication(username: string, password: string): Promise<IUser>
 }
 
 export const UserModel: IUserModel = model<IUser, IUserModel>('User', userSchema)
