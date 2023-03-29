@@ -165,5 +165,15 @@ export class HabitController {
     }
   }
 
+  async delete(req: AuthenticatedUserRequest, res: Response, next: NextFunction) {
+    try {
+      await this.#service.delete(req.habit.id)
+      res.status(204).end()
+    } catch (error) {
+      console.log(error)
+      next(error)
+    }
+  }
+
 
 }

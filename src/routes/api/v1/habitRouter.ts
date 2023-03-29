@@ -32,9 +32,5 @@ router.patch('/:title', (req: Request, res: Response, next: NextFunction) => res
 // PUT habits/:title
 router.put('/:title', (req: Request, res: Response, next: NextFunction) => resolveHabitController(req).update(req, res, next))
 
-
-/*
-
-
-// DELETE habits/:id
-router.delete('/:id', (req: Request, res: Response, next: NextFunction) => resolveHabitController(req).delete(req, res, next)); */
+// DELETE habits/:title
+router.delete('/:title', (req: Request, res: Response, next: NextFunction) => resolveHabitController(req).delete(req, res, next));
