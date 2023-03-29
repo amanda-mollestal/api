@@ -43,9 +43,9 @@ export class UserService extends MongooseServiceBase<IUser> {
       console.log(user)
       return user
 
-
     } catch (error) {
-      console.log(error)
+      //console.log(error)
+      throw error
     }
   }
 

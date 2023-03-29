@@ -40,6 +40,18 @@ export class MongooseServiceBase<T extends Document> {
      return this._repository.getById(id, projection, options);
    }
 
+   /**
+   * Gets one document.
+   *
+   * @param {object} filter - The filter to use.
+   * @param {object} projection - The projection to use.
+   * @param {object} options - The options to use.
+   * @returns {Promise<T>} Promise resolved with the found document.
+   */
+   async getOne(filter: any = null, projection: any = null, options: any = null): Promise<T | null> {
+    return this._repository.getOne(filter, projection, options);
+  }
+
   /**
    * Inserts a new document.
    *
@@ -57,9 +69,12 @@ export class MongooseServiceBase<T extends Document> {
    * @param {object} updateData - The new data to update the existing document with.
    * @returns {Promise<T>} Promise resolved with the updated document.
    */
-  // async update(id: string, updateData: Partial<T>): Promise<T | null> {
-  //   return this._repository.update(id, updateData, {});
-  // }
+   async update(id: string, updateData: Partial<T>): Promise<T | null> {
+    const result = await this._repository.update(id, updateData, {});
+    const updatedDocument = await this.getById(id); // get the updated document from the database
+    return updatedDocument ?? null;
+    //return this._repository.update(id, updateData, {});
+   }
 
   /**
    * Replaces a document.
@@ -70,7 +85,7 @@ export class MongooseServiceBase<T extends Document> {
    */
   // async replace(id: string, replaceData: T): Promise<T | null> {
   //   return this._repository.replace(id, replaceData, {});
-  // }
+ //  }
 
   /**
    * Deletes a document.

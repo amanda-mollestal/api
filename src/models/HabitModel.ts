@@ -2,16 +2,20 @@ import { Document, Model, Schema, model } from 'mongoose'
 
 export interface IHabit extends Document {
   //tree?: Record<string, any>
+  title: string
   description: string
   ownerId: string
-  dailyLogs: {
-    date: string
-    done: boolean
-    id: string
-  }[]
+  completedDates: string[]
 }
 
 const habitSchema = new Schema<IHabit>({
+  title: {
+    type: String,
+    required: true,
+    trim: true,
+    minlength: 1,
+    lowercase: true,
+  },
   description: {
     type: String,
     required: true,
@@ -22,27 +26,16 @@ const habitSchema = new Schema<IHabit>({
     type: String,
     required: true,
   },
-  dailyLogs: [
-    {
-      date: {
-        type: String,
-        required: true,
-        unique: true,
+  completedDates: {
+    type: [String],
+    unique: true,
+    validate: {
+      validator: function(arr: string[]) {
+        return arr.length === new Set(arr).size;
       },
-      done: {
-        type: Boolean,
-        required: true,
-        default: false,
-      },
-      id: {
-        type: String,
-        required: true,
-        default: function(this: any) {
-          return this._id.toHexString();
-        },
-      }
-    },
-  ],
+      message: 'You have already completed this habit today'
+    }
+  }
 })
 
 habitSchema.virtual('id').get(function (this: IHabit) {
@@ -62,7 +55,7 @@ const convertOptions = {
   transform: (doc: any, ret: any) => {
     delete ret._id
     delete ret.__v
-    ret.dailyLogs.forEach((log: any) => delete log._id)
+    //ret.completedDates.forEach((date: any) => delete date._id)
   },
 }
 

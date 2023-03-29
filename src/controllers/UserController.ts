@@ -3,10 +3,7 @@ import createError from 'http-errors'
 import { Request, Response, NextFunction } from 'express'
 import { UserService } from '../services/UserService'
 import { UserModel, IUser } from '../models/UserModel'
-
-export interface AuthenticatedUserRequest extends Request {
-  user?: IUser;
-}
+import { AuthenticatedUserRequest } from './IAuthenticatedUserRequest'
 
 export class UserController {
   #service: UserService
@@ -74,7 +71,6 @@ export class UserController {
       req.user = user
 
       //console.log(req.params)
-      console.log(token)
       next()
 
       /*const user = await this.#service.getById(req.params.id)
@@ -84,9 +80,17 @@ export class UserController {
       }
       res.status(200).json(user)*/ 
     } catch (error) {
-      console.log(error)
-      //next(error)
+      if (error.name === 'JsonWebTokenError') {
+        error.status = 401
+        error.message = 'Access token invalid or not provided.'
+        next(error)
+      }
+      //console.log(error)
+      next(error)
     }
+
+      
+    
   }
 
   

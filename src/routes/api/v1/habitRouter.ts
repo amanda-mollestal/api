@@ -10,6 +10,10 @@ export const router = express.Router();
  */
 const resolveHabitController = (req: Request) => req.app.get('container').resolve('HabitController');
 
+
+// Provide req.habit to the route if :title is present in the route path.
+router.param('title', (req: Request, res: Response, next: NextFunction, title: string) => resolveHabitController(req).loadHabit(req, res, next, title));
+
 // GET 
 router.get('/', (req: Request, res: Response, next: NextFunction) => {
   console.log('Hello from habitRouter.ts');
@@ -17,6 +21,11 @@ router.get('/', (req: Request, res: Response, next: NextFunction) => {
 
 // POST habits
 router.post('/', (req: Request, res: Response, next: NextFunction) => resolveHabitController(req).create(req, res, next));
+
+// GET habits/:id
+router.get('/:title', (req: Request, res: Response, next: NextFunction) => resolveHabitController(req).find(req, res, next));
+
+router.post('/:title/complete', (req: Request, res: Response, next: NextFunction) => resolveHabitController(req).addCompletedDate(req, res, next));
 
 /*
 // Provide req.task to the route if :id is present in the route path.

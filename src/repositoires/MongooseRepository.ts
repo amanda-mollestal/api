@@ -44,7 +44,7 @@ export class MongooseRepositoryBase<T> {
     return this.#model.findById(id, projection, options).exec();
   }
 
-  async getOne(conditions: any, projection: any, options: any) {
+  async getOne(conditions: any, projection: any = null, options: any = null) {
     return this.#model.findOne(conditions, projection, options).exec();
   }
 
@@ -59,6 +59,7 @@ export class MongooseRepositoryBase<T> {
   }
 
   async update(id: string, updateData: Partial<T>, options: any) {
+    console.log('updateData', updateData);
     this.#ensureValidPropertyNames(updateData);
 
     return this.#model
@@ -84,6 +85,7 @@ export class MongooseRepositoryBase<T> {
 
   #ensureValidPropertyNames(data: any) {
     for (const key of Object.keys(data)) {
+      console.log('key', key);
       if (!this.allowedModelPropertyNames.includes(key)) {
         const error = new Error(`'${key}' is not a valid property name.`);
         error.name = 'ValidationError';
