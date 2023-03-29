@@ -23,27 +23,22 @@ export class HabitController {
 
       console.log(req.body)
 
-      const result: IHabit = await this.#service.insert({
+      const habit: IHabit = {
         title: req.body.title,
         description: req.body.description,
         ownerId: req.user.id,
-      } as IHabit)
+      } as IHabit
+
+      if (req.body.completedDates) {
+        habit.completedDates = req.body.completedDates;
+      }
+
+      const result: IHabit = await this.#service.insert(habit);
+
       console.log(result)
       res.status(201).json(result)
 
-      //console.log(date.toLocaleDateString())
-
-      /*const result: IHabit = await this.#service.insert({
-        description: "Brush teeth",
-        ownerId: req.user.id,
-        dailyLogs: [
-          {
-            date: date.toLocaleDateString(),
-            done: true,
-          },
-        ],
-      } as IHabit)
-      res.status(201).json(result)*/
+      
       /*
       const location = new URL(
         `${req.protocol}://${req.get('host')}${req.baseUrl}/${task._id}`
@@ -61,7 +56,7 @@ export class HabitController {
       if (error.code === 11000) {
         next(createError(400, 'Duplicate key error'))
         return
-      }
+      } 
       next(error)
     }
   }
@@ -111,8 +106,6 @@ export class HabitController {
   async addCompletedDate(req: AuthenticatedUserRequest, res: Response, next: NextFunction) {
 
     try {
-      
-
       const updatedHabit = await this.#service.addCompletedDate(req.habit.id)
       console.log(updatedHabit)
 
@@ -128,7 +121,49 @@ export class HabitController {
     }
   }
 
-  
+  async partiallyUpdate(req: AuthenticatedUserRequest, res: Response, next: NextFunction) {
+
+    try {
+
+      const updatedHabit = await this.#service.update(req.habit.id, req.body)
+
+      res.json(updatedHabit).status(204)
+
+    } catch (error) {
+      console.log(error)
+      if (error.name === 'ValidationError') {
+        next(createError(400, error.message))
+        return 
+      }
+      next(error)
+    }
+  }
+
+  async update(req: AuthenticatedUserRequest, res: Response, next: NextFunction) {
+    try {
+
+      console.log('heeelo from update')
+      const habit: IHabit = {
+        title: req.body.title,
+        description: req.body.description,
+        ownerId: req.user.id,
+      } as IHabit
+
+      if (req.body.completedDates) {
+        habit.completedDates = req.body.completedDates;
+      }
+
+      const updatedHabit = await this.#service.replace(req.habit.id, habit)
+      res.json(updatedHabit)
+    } catch (error) {
+      console.log(error)
+      if (error.name === 'ValidationError') {
+        next(createError(400, error.message))
+        return 
+      }
+      next(error)
+    }
+  }
 
 
 }

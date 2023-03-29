@@ -10,7 +10,6 @@ export const router = express.Router();
  */
 const resolveHabitController = (req: Request) => req.app.get('container').resolve('HabitController');
 
-
 // Provide req.habit to the route if :title is present in the route path.
 router.param('title', (req: Request, res: Response, next: NextFunction, title: string) => resolveHabitController(req).loadHabit(req, res, next, title));
 
@@ -22,29 +21,20 @@ router.get('/', (req: Request, res: Response, next: NextFunction) => {
 // POST habits
 router.post('/', (req: Request, res: Response, next: NextFunction) => resolveHabitController(req).create(req, res, next));
 
-// GET habits/:id
+// GET habits/:title
 router.get('/:title', (req: Request, res: Response, next: NextFunction) => resolveHabitController(req).find(req, res, next));
 
 router.post('/:title/complete', (req: Request, res: Response, next: NextFunction) => resolveHabitController(req).addCompletedDate(req, res, next));
 
+// PATCH habits/:title
+router.patch('/:title', (req: Request, res: Response, next: NextFunction) => resolveHabitController(req).partiallyUpdate(req, res, next))
+
+// PUT habits/:title
+router.put('/:title', (req: Request, res: Response, next: NextFunction) => resolveHabitController(req).update(req, res, next))
+
+
 /*
-// Provide req.task to the route if :id is present in the route path.
-router.param('id', (req: Request, res: Response, next: NextFunction, id: string) => resolveHabitController(req).loadTask(req, res, next, id));
 
-// GET habits
-router.get('/', (req: Request, res: Response, next: NextFunction) => resolveHabitController(req).findAll(req, res, next));
-
-// GET habits/:id
-router.get('/:id', (req: Request, res: Response, next: NextFunction) => resolveHabitController(req).find(req, res, next));
-
-// POST habits
-router.post('/', (req: Request, res: Response, next: NextFunction) => resolveHabitController(req).create(req, res, next));
-
-// PATCH habits/:id
-router.patch('/:id', (req: Request, res: Response, next: NextFunction) => resolveHabitController(req).partiallyUpdate(req, res, next));
-
-// PUT habits/:id
-router.put('/:id', (req: Request, res: Response, next: NextFunction) => resolveHabitController(req).update(req, res, next));
 
 // DELETE habits/:id
 router.delete('/:id', (req: Request, res: Response, next: NextFunction) => resolveHabitController(req).delete(req, res, next)); */

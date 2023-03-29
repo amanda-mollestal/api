@@ -12,9 +12,7 @@ export class HabitRepository extends MongooseRepositoryBase<IHabit> {
 
     const date = new Date()
     const dateStr = date.toLocaleDateString()
-    const newDailyLog = {
-      date: dateStr
-    }
+   
     /*
     if (!habit) {
       return null // habit not found

@@ -12,8 +12,6 @@ export class HabitService extends MongooseServiceBase<IHabit> {
   }
 
   async addCompletedDate(habitId: string) {
-
-  
     const habit = await this.repository.addCompletedDate(habitId)
     return habit
   }
