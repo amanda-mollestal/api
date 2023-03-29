@@ -110,16 +110,47 @@ export class HabitController {
       console.log(updatedHabit)
 
       //res.json(updatedHabit)
-      res.status(204)
+      res.status(204).end()
 
     } catch (error) {
       if (error.name === 'ValidationError') {
-        next(createError(400, 'You have already completed this habit today.'))
+        next(createError(400, 'This habit has already been completed today.'))
         return 
       }
       next(error)
     }
   }
+
+  async undoCompletedDate(req: AuthenticatedUserRequest, res: Response, next: NextFunction) {
+
+    try {
+      const updatedHabit = await this.#service.undoCompletedDate(req.habit.id)
+      res.status(204).end()
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
+  /*
+  async removeCompletedDate(req: AuthenticatedUserRequest, res: Response, next: NextFunction) {
+      
+      try {
+        const updatedHabit = await this.#service.removeCompletedDate(req.habit.id)
+        console.log(updatedHabit)
+  
+        //res.json(updatedHabit)
+        res.status(204)
+  
+      } catch (error) {
+        console.log(error)
+        /*if (error.name === 'ValidationError') {
+          next(createError(400, 'You have already completed this habit today.'))
+          return 
+        }*/ /*
+        next(error)
+      }
+  }*/
+  
 
   async partiallyUpdate(req: AuthenticatedUserRequest, res: Response, next: NextFunction) {
 

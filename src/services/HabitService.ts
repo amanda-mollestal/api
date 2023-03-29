@@ -15,4 +15,15 @@ export class HabitService extends MongooseServiceBase<IHabit> {
     const habit = await this.repository.addCompletedDate(habitId)
     return habit
   }
+
+  async undoCompletedDate(habitId: string) {
+    const habit = await this.repository.undoCompletedDate(habitId)
+    return habit
+  }
+
+  async removeCompletedDate(habitId: string, date: string) {
+
+  }
+
+
 }

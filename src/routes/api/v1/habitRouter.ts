@@ -26,6 +26,8 @@ router.get('/:title', (req: Request, res: Response, next: NextFunction) => resol
 
 router.post('/:title/complete', (req: Request, res: Response, next: NextFunction) => resolveHabitController(req).addCompletedDate(req, res, next));
 
+router.post('/:title/revert', (req: Request, res: Response, next: NextFunction) => resolveHabitController(req).undoCompletedDate(req, res, next));
+
 // PATCH habits/:title
 router.patch('/:title', (req: Request, res: Response, next: NextFunction) => resolveHabitController(req).partiallyUpdate(req, res, next))
 
