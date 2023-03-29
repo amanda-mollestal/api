@@ -36,9 +36,9 @@ export class MongooseServiceBase<T extends Document> {
    * @param {string} id - The value of the id for the document to get.
    * @returns {Promise<T>} Promise resolved with the found document.
    */
-  // async getById(id: string): Promise<T | null> {
-  //   return this._repository.getById(id);
-  // }
+   async getById(id: string, projection: any = null, options: any = null): Promise<T | null> {
+     return this._repository.getById(id, projection, options);
+   }
 
   /**
    * Inserts a new document.

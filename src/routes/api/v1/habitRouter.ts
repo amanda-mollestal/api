@@ -3,10 +3,10 @@ import express, { Request, Response, NextFunction } from 'express';
 export const router = express.Router();
 
 /**
- * Resolves a TasksController object from the IoC container.
+ * Resolves a HabitController object from the IoC container.
  *
  * @param {Request} req - Express request object.
- * @returns {Object} An object that can act as a TasksController object.
+ * @returns {Object} An object that can act as a HabitController object.
  */
 const resolveHabitController = (req: Request) => req.app.get('container').resolve('HabitController');
 

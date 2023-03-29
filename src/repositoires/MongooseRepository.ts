@@ -40,7 +40,7 @@ export class MongooseRepositoryBase<T> {
     return this.#model.find(filter, projection, options).exec();
   }
 
-  async getById(id: string, projection: any, options: any) {
+  async getById(id: string, projection: any = null, options: any = null) {
     return this.#model.findById(id, projection, options).exec();
   }
 

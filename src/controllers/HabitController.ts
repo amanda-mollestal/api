@@ -2,6 +2,7 @@ import createError from 'http-errors'
 import { Request, Response, NextFunction } from 'express'
 import { HabitService } from '../services/HabitService'
 import { HabitModel, IHabit } from '../models/HabitModel'
+import { AuthenticatedUserRequest } from './UserController'
 //import { TasksService } from '../services/TasksService'
 
 export class HabitController {
@@ -16,7 +17,7 @@ export class HabitController {
     res.json({ message: 'Hello from HabitController'})
   }
 
-  async create(req: Request, res: Response, next: NextFunction) {
+  async create(req: AuthenticatedUserRequest, res: Response, next: NextFunction) {
     try {
 
       const date = new Date()
@@ -25,6 +26,7 @@ export class HabitController {
 
       const result: IHabit = await this.#service.insert({
         description: "Brush teeth",
+        ownerId: req.user.id,
         dailyLogs: [
           {
             date: date.toLocaleDateString(),
@@ -70,9 +72,13 @@ async find(req: Request, res: Response, next: NextFunction) {
   res.json(req.task)
 } */
 
-async findAll(req: Request, res: Response, next: NextFunction) {
+async findAll(req: AuthenticatedUserRequest, res: Response, next: NextFunction) {
   try {
-    const habits = await this.#service.get()
+    console.log(req.user)
+
+    const filter = { ownerId: req.user.id };
+
+    const habits = await this.#service.get(filter)
     res.json(habits)
   } catch (error) {
     next(error)

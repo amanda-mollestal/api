@@ -12,9 +12,10 @@ export class UserRepository extends MongooseRepositoryBase<IUser> {
   async verifyUser(username: string, password: string) {
     try {
      const user = await this.model.authentication(username, password)
-     console.log(user)
+     return user
     } catch (error) {
       console.log(error)
     }
   }
+
 }

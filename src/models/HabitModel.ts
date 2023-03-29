@@ -3,6 +3,7 @@ import { Document, Model, Schema, model } from 'mongoose'
 export interface IHabit extends Document {
   //tree?: Record<string, any>
   description: string
+  ownerId: string
   dailyLogs: {
     date: string
     done: boolean
@@ -16,6 +17,10 @@ const habitSchema = new Schema<IHabit>({
     required: true,
     trim: true,
     minlength: 1,
+  },
+  ownerId: {
+    type: String,
+    required: true,
   },
   dailyLogs: [
     {

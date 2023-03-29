@@ -4,6 +4,10 @@ import { Request, Response, NextFunction } from 'express'
 import { UserService } from '../services/UserService'
 import { UserModel, IUser } from '../models/UserModel'
 
+export interface AuthenticatedUserRequest extends Request {
+  user?: IUser;
+}
+
 export class UserController {
   #service: UserService
 
@@ -48,11 +52,44 @@ export class UserController {
 
   async login(req: Request, res: Response, next: NextFunction) {
     try {
-      console.log(req.body.username)
-      await this.#service.login(req.body.username, req.body.password)
-
+      const accessToken = await this.#service.login(req.body.username, req.body.password)
+      res.status(200).json({ 'access-token': accessToken })
     } catch (error) {
-      console.log(error)
+      error.status = 401
+      error.message = 'Credentials invalid or not provided.'
+      next(error)
     }
   }
+
+  async validateJwt(req: AuthenticatedUserRequest, res: Response, next: NextFunction) {
+    try {
+      const [authenticationScheme, token] = req.headers.authorization?.split(' ')
+
+      if (authenticationScheme !== 'Bearer') {
+        throw new Error('Invalid authentication scheme.')
+      }
+
+      const user = await this.#service.validateJwt(token)
+      
+      req.user = user
+
+      //console.log(req.params)
+      console.log(token)
+      next()
+
+      /*const user = await this.#service.getById(req.params.id)
+      if (!user) {
+        next(createError(404, 'The requested resource was not found.'))
+        return
+      }
+      res.status(200).json(user)*/ 
+    } catch (error) {
+      console.log(error)
+      //next(error)
+    }
+  }
+
+  
+
+  
 }
