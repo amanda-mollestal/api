@@ -42,6 +42,20 @@ habitSchema.virtual('id').get(function (this: IHabit) {
   return this._id.toHexString()
 })
 
+habitSchema.pre<IHabit>('save', async function (next) {
+  const habit = this;
+
+  // Check if a habit with the same title and ownerId already exists
+  const existingHabit = await HabitModel.findOne({ title: habit.title, ownerId: habit.ownerId });
+  if (existingHabit) {
+    const err = new Error('A habit with the same title already exists');
+    err.name = 'ExistingHabitError'
+    return next(err);
+  }
+
+  next();
+});
+
 
 const convertOptions = {
   virtuals: true,

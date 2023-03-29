@@ -53,6 +53,11 @@ export class HabitController {
 
       // Send correct error code and message
 
+      if (error.name === 'ExistingHabitError') {
+        next(createError(400, 'Habit with that title already exists'))
+        return
+      }
+
       if (error.code === 11000) {
         next(createError(400, 'Duplicate key error'))
         return
