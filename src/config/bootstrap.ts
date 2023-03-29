@@ -8,6 +8,10 @@ import { UserModel } from '../models/UserModel'
 import { UserRepository } from '../repositoires/UserRepository'
 import { UserService } from '../services/UserService'
 import { UserController } from '../controllers/UserController'
+import { WebhookModel } from '../models/WebhookModel'
+import { WebhookRepository } from '../repositoires/WebhookRepository'
+import { WebhookService } from '../services/WebhookService'
+import { WebhookController } from '../controllers/WebhookController'
 
 
 const iocContainer = new IoCContainer()
@@ -47,6 +51,25 @@ iocContainer.register('UserServiceSingleton', UserService, {
 iocContainer.register('UserController', UserController, {
   dependencies: ['UserServiceSingleton'],
 })
+
+iocContainer.register('WebhookModelType', WebhookModel, { type: true });
+
+iocContainer.register('WebhookRepositorySingleton', WebhookRepository, {
+  dependencies: ['WebhookModelType'],
+  singleton: true,
+})
+
+iocContainer.register('WebhookServiceSingleton', WebhookService, {
+  dependencies: ['WebhookRepositorySingleton'],
+  singleton: true,
+})
+
+iocContainer.register('WebhookController', WebhookController, {
+  dependencies: ['WebhookServiceSingleton'],
+})  
+
+
+
 
 
 

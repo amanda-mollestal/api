@@ -1,7 +1,7 @@
 import { MongooseServiceBase } from './MongooseServiceBase'
 import { HabitRepository } from '../repositoires/HabitRepository'
 import { IHabit } from '../models/HabitModel'
-import { MongooseRepositoryBase } from '../repositoires/MongooseRepository'
+
 
 export class HabitService extends MongooseServiceBase<IHabit> {
   repository: HabitRepository

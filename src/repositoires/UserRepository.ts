@@ -1,6 +1,6 @@
 import { MongooseRepositoryBase } from './MongooseRepository';
 import { IUser, UserModel, IUserModel } from '../models/UserModel';
-import { Model } from 'mongoose';
+
 
 export class UserRepository extends MongooseRepositoryBase<IUser> {
   model: IUserModel

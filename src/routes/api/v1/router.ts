@@ -14,4 +14,4 @@ router.use('/user', userRouter)
 //router.use('/habits', resolveUserController(req).validateUser(req, res, next), habitsRouter);
 
 router.use('/habits', (req: Request, res: Response, next: NextFunction) =>
-  resolveUserController(req).validateJwt(req, res, next) , habitsRouter);  
+  resolveUserController(req).validateJwt(req, res, next) , habitsRouter)

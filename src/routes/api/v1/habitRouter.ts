@@ -15,10 +15,9 @@ router.param('title', (req: Request, res: Response, next: NextFunction, title: s
 
 // GET 
 router.get('/', (req: Request, res: Response, next: NextFunction) => {
-  console.log('Hello from habitRouter.ts');
   resolveHabitController(req).findAll(req, res, next) });
 
-// POST habits
+// POST habit
 router.post('/', (req: Request, res: Response, next: NextFunction) => resolveHabitController(req).create(req, res, next));
 
 // GET habits/:title
