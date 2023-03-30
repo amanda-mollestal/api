@@ -47,7 +47,8 @@ habitSchema.pre<IHabit>('save', async function (next) {
 
   // Check if a habit with the same title and ownerId already exists
   const existingHabit = await HabitModel.findOne({ title: habit.title, ownerId: habit.ownerId });
-  if (existingHabit) {
+
+  if (existingHabit && this.isNew) {
     const err = new Error('A habit with the same title already exists');
     err.name = 'ExistingHabitError'
     return next(err);

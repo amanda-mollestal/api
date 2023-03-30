@@ -1,14 +1,16 @@
 import { Document, Model, Schema, model } from 'mongoose';
+import validator from 'validator'
 
 export enum WebhookEvent {
-  HABIT_COMPLETED = 'habitCompleted',
-  HABIT_REVERTED = 'habitReverted',
-  HABIT_UPDATED = 'habitUpdated',
+  COMPLETED = 'completed',
+  REVERTED  = 'reverted',
+  UPDATED   = 'updated',
 }
 
 export interface IWebhook extends Document {
   url: string;
-  events: string[];
+  ownerId: string;
+  events: WebhookEvent[];
 }
 
 const webhookSchema = new Schema<IWebhook>({
@@ -16,6 +18,11 @@ const webhookSchema = new Schema<IWebhook>({
     type: String,
     required: true,
     trim: true,
+    validate: [validator.isURL, 'The URL you entered is not a valid URL'],
+  },
+  ownerId: {
+    type: String,
+    required: true,
   },
   events: {
     type: [{

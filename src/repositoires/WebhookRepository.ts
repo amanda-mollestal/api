@@ -1,5 +1,5 @@
 import { MongooseRepositoryBase } from './MongooseRepository';
-import { IWebhook, IWebhookModel, WebhookModel  } from '../models/WebhookModel';
+import { IWebhook, IWebhookModel, WebhookEvent, WebhookModel  } from '../models/WebhookModel';
 
 
 
@@ -9,4 +9,5 @@ export class WebhookRepository extends MongooseRepositoryBase<IWebhook> {
     super(model)
     this.model = model
   }
+
 }

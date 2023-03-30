@@ -85,6 +85,12 @@ export class UserController {
         error.message = 'Access token invalid or not provided.'
         next(error)
       }
+
+      if (error.name === 'TokenExpiredError') {
+        error.status = 401
+        error.message = 'Access token invalid or not provided.'
+        next(error)
+      }
       //console.log(error)
       next(error)
     }

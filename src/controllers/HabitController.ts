@@ -114,8 +114,10 @@ export class HabitController {
       const updatedHabit = await this.#service.addCompletedDate(req.habit.id)
       console.log(updatedHabit)
 
+      req.habit = updatedHabit
       //res.json(updatedHabit)
       res.status(204).end()
+      return next()
 
     } catch (error) {
       if (error.name === 'ValidationError') {
@@ -130,6 +132,7 @@ export class HabitController {
 
     try {
       const updatedHabit = await this.#service.undoCompletedDate(req.habit.id)
+      req.habit = updatedHabit
       res.status(204).end()
     } catch (error) {
       console.log(error)
@@ -162,6 +165,7 @@ export class HabitController {
     try {
 
       const updatedHabit = await this.#service.update(req.habit.id, req.body)
+      req.habit = updatedHabit
 
       res.json(updatedHabit).status(204)
 
@@ -190,6 +194,8 @@ export class HabitController {
       }
 
       const updatedHabit = await this.#service.replace(req.habit.id, habit)
+
+      req.habit = updatedHabit
       res.json(updatedHabit)
     } catch (error) {
       console.log(error)
@@ -204,6 +210,7 @@ export class HabitController {
   async delete(req: AuthenticatedUserRequest, res: Response, next: NextFunction) {
     try {
       await this.#service.delete(req.habit.id)
+      req.habit = null
       res.status(204).end()
     } catch (error) {
       console.log(error)
