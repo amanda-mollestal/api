@@ -134,6 +134,7 @@ export class HabitController {
       const updatedHabit = await this.#service.undoCompletedDate(req.habit.id)
       req.habit = updatedHabit
       res.status(204).end()
+      return next()
     } catch (error) {
       console.log(error)
     }

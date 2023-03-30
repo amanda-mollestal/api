@@ -54,12 +54,11 @@ export class MongooseRepositoryBase<T> {
     return this.#model.create(insertData);
   }
 
-  async delete(id: string, options: any) {
+  async delete(id: string, options: any = null) {
     return this.#model.findByIdAndDelete(id, options).exec();
   }
 
   async update(id: string, updateData: Partial<T>, options: any) {
-    console.log('updateData', updateData);
     this.#ensureValidPropertyNames(updateData);
 
     return this.#model

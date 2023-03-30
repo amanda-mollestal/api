@@ -10,4 +10,5 @@ export class WebhookRepository extends MongooseRepositoryBase<IWebhook> {
     this.model = model
   }
 
+
 }

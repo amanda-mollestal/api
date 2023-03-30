@@ -41,17 +41,47 @@ router.post('/:title/complete',
     resolveWebhookController(req).fireWebhook(req, res, next, WebhookEvent.COMPLETED)
   }
 )
-
-router.post('/:title/revert', (req: Request, res: Response, next: NextFunction) => resolveHabitController(req).undoCompletedDate(req, res, next))
+/*
+router.post('/:title/revert', (req: Request, res: Response, next: NextFunction) => {
+  resolveHabitController(req).undoCompletedDate(req, res, next)
+})*/ 
+  
+router.post('/:title/revert', 
+  (req: Request, res: Response, next: NextFunction) => {
+    resolveHabitController(req).undoCompletedDate(req, res, next)
+  },
+  (req: Request, res: Response, next: NextFunction) => {
+    resolveWebhookController(req).fireWebhook(req, res, next, WebhookEvent.REVERTED)
+  }
+)
 
 // PATCH habits/:title
-router.patch('/:title', (req: Request, res: Response, next: NextFunction) => resolveHabitController(req).partiallyUpdate(req, res, next))
+/*router.patch('/:title', (req: Request, res: Response, next: NextFunction) => resolveHabitController(req).partiallyUpdate(req, res, next))*/ 
+
+router.patch('/:title', 
+  (req: Request, res: Response, next: NextFunction) => {
+    resolveHabitController(req).partiallyUpdate(req, res, next)
+  },
+  (req: Request, res: Response, next: NextFunction) => {
+    resolveWebhookController(req).fireWebhook(req, res, next, WebhookEvent.UPDATED)
+  }
+)
 
 // PUT habits/:title
-router.put('/:title', (req: Request, res: Response, next: NextFunction) => resolveHabitController(req).update(req, res, next))
+/*router.put('/:title', (req: Request, res: Response, next: NextFunction) => resolveHabitController(req).update(req, res, next))*/
+
+router.put('/:title', 
+  (req: Request, res: Response, next: NextFunction) => {
+    resolveHabitController(req).update(req, res, next)
+  },
+  (req: Request, res: Response, next: NextFunction) => {
+    resolveWebhookController(req).fireWebhook(req, res, next, WebhookEvent.UPDATED)
+  }
+)
 
 // DELETE habits/:title
 router.delete('/:title', (req: Request, res: Response, next: NextFunction) => resolveHabitController(req).delete(req, res, next))
 
-router.post('/webhook/register', (req: Request, res: Response, next: NextFunction) => resolveWebhookController(req).registerWebhook(req, res, next));
+router.post('/webhook/register', (req: Request, res: Response, next: NextFunction) => resolveWebhookController(req).registerWebhook(req, res, next))
 
+router.post('/webhook/unregister', (req: Request, res: Response, next: NextFunction) => resolveWebhookController(req).unregisterWebhook(req, res, next));

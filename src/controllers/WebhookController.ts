@@ -62,6 +62,25 @@ export class WebhookController {
     }
   }
 
+  async unregisterWebhook(req: AuthenticatedUserRequest, res: Response, next: NextFunction) {
+
+    try {
+
+      console.log(req.user)
+      console.log(req.body)
+      await this.#service.unregister(req.body.id, req.user.id)
+      res.status(204).end()
+    } catch (error) {
+      console.log(error)
+      next(error)
+    }
+
+
+    //const result = await this.#service.register(req.body.url, req.user.id, req.body.events)
+
+
+  }
+
   /*async fireWebhook( webhook: IWebhook) {
     console.log('Firing webhook')
 

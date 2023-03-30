@@ -39,8 +39,21 @@ export class WebhookService extends MongooseServiceBase<IWebhook> {
 
   }
 
-  /*async getWebhook(habitId: string, userId: string) {
-    const webhooks = await this.repository.getWebhooksByUserAndEvent(userId, WebhookEvent.COMPLETED)
-    return webhooks
-  }*/
+  async unregister (webhookId: string, ownerId: string) {
+
+    console.log(webhookId)
+    const webhook = await this.repository.getById(webhookId) 
+
+    console.log(webhook)
+ 
+    if (webhook.ownerId !== ownerId) {
+      throw new Error('Unauthorized')
+    } else {
+      await this.repository.delete(webhookId)
+    }
+  } 
+
 }
+  
+
+
