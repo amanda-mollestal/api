@@ -1,4 +1,6 @@
 
+// This file contains all the links for the API
+
 export const registerLinks = {
   self: { href: '/user/register', title: 'Register a new user' },
   login: {

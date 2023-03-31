@@ -5,24 +5,25 @@
  * @version 1.0.0
  */
 
-// import mongoose, { Document, Model, Schema } from 'mongoose'
-// import validator from 'validator'
-// import bcrypt from 'bcrypt'
 
 import { Document, Model, Schema, model } from 'mongoose'
 import bcrypt from 'bcrypt'
 import validator from 'validator'
 
-
+/** 
+ * The interface that describes the properties that a User document has.
+ */
 export interface IUser extends Document {
   username: string,
   password: string,
   email: string,
-  comparePassword: (password: string) => Promise<boolean>,
   authentication: (username: string, password: string) => Promise<IUser | null>
   
 }
 
+/**
+ * The schema that describes the properties that a User document has.
+ */
 const userSchema = new Schema<IUser>({
   username: {
     type: String,
@@ -47,13 +48,19 @@ const userSchema = new Schema<IUser>({
 
 })
 
+/**
+ *  Validates the username.
+ * 
+ * @param {string} username - The username to validate.
+ * @returns  {boolean} - True if the username is valid, otherwise false.
+ */
 function validateUsername(username: string): boolean {
   const regex = /^[A-Za-z][A-Za-z0-9_-]{2,255}$/;
   return regex.test(username);
 }
 
 // Hash password and trim username before saving
-userSchema.pre<IUser>('save', async function (next) {
+userSchema.pre<IUser>('save', async function (next): Promise<void> {
   this.username = trimString(this.username)
   this.email = trimString(this.email)
   if (this.isModified('password') || this.isNew) {
@@ -66,6 +73,12 @@ userSchema.pre<IUser>('save', async function (next) {
   next()
 })
 
+/**
+ * Trims the string.
+ * 
+ * @param {string} value - The string to trim.
+ * @returns {string} - The trimmed string.
+ */
 function trimString(value: string): string {
   if (typeof value !== 'string') {
     return value;
@@ -75,15 +88,13 @@ function trimString(value: string): string {
 }
 
 
-// DON'T KNOW WHICH ONE TO USE YET
-/*
-// This approach is useful if you want to have the authentication code as part of the user instance.
-userSchema.methods.comparePassword = async function (password: string): Promise<boolean> {
-  return bcrypt.compare(password, this.password)
-}*/
-
-//This approach is useful if you want to keep all authentication-related code within the Mongoose model.
-userSchema.statics.authentication = async function (username: string, password: string): Promise<IUser> {
+/**
+ * The model that describes the properties that a User document has.
+ *
+ * @param {string} username - The username of the user.
+ * @param {string} password - The password of the user.
+ */
+ userSchema.statics.authentication = async function (username: string, password: string): Promise<IUser> {
   const user = await this.findOne({ username })
 
   // If no user found or password is wrong, throw an error.
@@ -94,8 +105,6 @@ userSchema.statics.authentication = async function (username: string, password: 
   // User found and password correct, return the user.
   return user as IUser
 }
-
-
 
 const convertOptions = {
   virtuals: true,
@@ -147,8 +156,8 @@ userSchema.post<IUser>('save', function (error: any, doc: IUser, next: any) {
 
 
 export interface IUserModel extends Model<IUser> {
-  comparePassword(password: string): Promise<boolean>
   authentication(username: string, password: string): Promise<IUser>
 }
+
 
 export const UserModel: IUserModel = model<IUser, IUserModel>('User', userSchema)

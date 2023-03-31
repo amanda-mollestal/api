@@ -6,13 +6,26 @@ import { UserModel, IUser } from '../models/UserModel'
 import { AuthenticatedUserRequest } from './IAuthenticatedUserRequest'
 import { registerLinks, loginLinks } from './Links'
 
+/**
+ * Controller class for handling User-related HTTP requests.
+ */
 export class UserController {
   #service: UserService
 
+  /**
+   * Creates a new instance of the UserController class.
+   * @param {UserService} service The User service used by the controller.
+   */
   constructor(service: UserService) {
     this.#service = service
   }
 
+  /**
+   * Handles the HTTP POST /users request.
+   * @param {Request} req -  The request object.
+   * @param {Response} res - The response object.
+   * @param {NextFunction} next - The next function in the middleware chain.
+   */
   async register(req: Request, res: Response, next: NextFunction) {
     try {
 
@@ -38,6 +51,12 @@ export class UserController {
     }
   }
 
+  /**
+   * Handles the HTTP POST /users/login request.
+   * @param {Request} req -  The request object.
+   * @param {Response} res - The response object.
+   * @param {NextFunction} next - The next function in the middleware chain.
+   */
   async login(req: Request, res: Response, next: NextFunction) {
     try {
       const accessToken = await this.#service.login(req.body.username, req.body.password)
@@ -55,6 +74,13 @@ export class UserController {
     }
   }
 
+  /**
+   *  Validates the JWT token in the request header and attaches the user to the request object.
+   * 
+   * @param {AuthenticatedUserRequest} req -  The request object.
+   * @param {Response} res - The response object.
+   * @param {NextFunction} next - The next function in the middleware chain.
+   */
   async validateJwt(req: AuthenticatedUserRequest, res: Response, next: NextFunction) {
     try {
       const [authenticationScheme, token] = req.headers.authorization?.split(' ')
@@ -79,7 +105,6 @@ export class UserController {
         error.message = 'Access token invalid or not provided.'
         next(error)
       }
-      //console.log(error)
       next(error)
     }
 

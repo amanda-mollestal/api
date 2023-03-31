@@ -53,14 +53,6 @@ export class HabitController {
         _links: links,
       })
 
-
-      /*
-      const location = new URL(
-        `${req.protocol}://${req.get('host')}${req.baseUrl}/${task._id}`
-      )
-
-      res.location(location.href).status(201).json(task)*/
-
     } catch (error) {
       console.log(error)
 
@@ -77,7 +69,14 @@ export class HabitController {
     }
   }
 
-
+  /**
+   * Loads a habit from the database and attaches it to the request object.
+   *
+   * @param {AuthenticatedUserRequest} req - The request object.
+   * @param {Response} res - The response object.
+   * @param {NextFunction} next - The next function in the middleware chain.
+   * @param {string} title - The title of the habit to load.
+   */
   async loadHabit(req: AuthenticatedUserRequest, res: Response, next: NextFunction, title: string) {
     try {
       const searchTitle = title.replace(/-/g, ' ')
@@ -98,6 +97,13 @@ export class HabitController {
     }
   }
 
+  /**
+   * Handles the HTTP GET /habits request.
+   *
+   * @param {AuthenticatedUserRequest} req - The request object.
+   * @param {Response} res - The response object.
+   * @param {NextFunction} next - The next function in the middleware chain.
+   */
   async findAll(req: AuthenticatedUserRequest, res: Response, next: NextFunction) {
     try {
 
@@ -105,16 +111,19 @@ export class HabitController {
 
       const habits = await this.#service.get(filter)
 
-
-
-      //console.log(`req.protocol: ${req.protocol} :// req.gethost: ${req.get('host')} req.baseUrl:  ${req.baseUrl}/`)
-
       res.status(200).json({ habits: habits, _links: findAllLinks })
     } catch (error) {
       next(error)
     }
   }
 
+  /**
+   * Handles the HTTP GET /habits/:title request.
+   *
+   * @param {AuthenticatedUserRequest} req - The request object.
+   * @param {Response} res - The response object.
+   * @param {NextFunction} next - The next function in the middleware chain.
+   */
   async find(req: AuthenticatedUserRequest, res: Response, next: NextFunction) {
     try {
       const habitTitle = req.habit.title.replace(/ /g, '-')
@@ -127,6 +136,13 @@ export class HabitController {
     }
   }
 
+  /**
+   * Handles the HTTP POST /habits/:title/complete request.
+   *
+   * @param {AuthenticatedUserRequest} req - The request object.
+   * @param {Response} res - The response object.
+   * @param {NextFunction} next - The next function in the middleware chain.
+   */
   async addCompletedDate(req: AuthenticatedUserRequest, res: Response, next: NextFunction) {
 
     try {
@@ -138,7 +154,7 @@ export class HabitController {
       const links = completeLinks(habitTitle)
 
 
-      res.status(204).json({
+      res.status(200).json({
         message: 'Habit completed successfully',
         habit: updatedHabit,
         _links: links
@@ -154,6 +170,13 @@ export class HabitController {
     }
   }
 
+  /**
+   * Handles the HTTP POST /habits/:title/revert request.
+   *
+   * @param {AuthenticatedUserRequest} req - The request object.
+   * @param {Response} res - The response object.
+   * @param {NextFunction} next - The next function in the middleware chain.
+   */
   async undoCompletedDate(req: AuthenticatedUserRequest, res: Response, next: NextFunction) {
 
     try {
@@ -164,7 +187,7 @@ export class HabitController {
 
       const links = undoLinks(habitTitle)
 
-      res.status(204).json({
+      res.status(200).json({
         message: 'Habit reverted successfully',
         habit: updatedHabit,
         _links: links
@@ -176,7 +199,10 @@ export class HabitController {
     }
   }
 
+  // NOT IMPLEMENTED YET
+
   /*
+
   async removeCompletedDate(req: AuthenticatedUserRequest, res: Response, next: NextFunction) {
       
       try {
@@ -197,6 +223,13 @@ next(error)
 }*/
 
 
+  /**
+   * Handles the HTTP PATCH /habits/:title request.
+   *
+   * @param {AuthenticatedUserRequest} req - The request object.
+   * @param {Response} res - The response object.
+   * @param {NextFunction} next - The next function in the middleware chain.
+   */
   async partiallyUpdate(req: AuthenticatedUserRequest, res: Response, next: NextFunction) {
 
     try {
@@ -225,6 +258,13 @@ next(error)
     }
   }
 
+  /**
+   * Handles the HTTP PUT /habits/:title request.
+   *
+   * @param {AuthenticatedUserRequest} req - The request object.
+   * @param {Response} res  - The response object.
+   * @param {NextFunction} next - The next function in the middleware chain.
+   */
   async update(req: AuthenticatedUserRequest, res: Response, next: NextFunction) {
     try {
 
@@ -264,6 +304,12 @@ next(error)
     }
   }
 
+  /**
+   * Handles the HTTP DELETE /habits/:title request.
+   *
+   * @param {AuthenticatedUserRequest} req
+   * @param {Response} res
+   */
   async delete(req: AuthenticatedUserRequest, res: Response, next: NextFunction) {
     try {
       await this.#service.delete(req.habit.id)
@@ -283,7 +329,5 @@ next(error)
       next(error)
     }
   }
-
-
 
 }

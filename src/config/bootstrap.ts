@@ -69,26 +69,4 @@ iocContainer.register('WebhookController', WebhookController, {
 })  
 
 
-
-
-
-
-/*
-iocContainer.register<TaskModel>('TaskModelType', TaskModel, { type: true });
-
-iocContainer.register<TaskRepository>('TaskRepositorySingleton', TaskRepository, {
-  dependencies: ['TaskModelType'],
-  singleton: true,
-});
-
-iocContainer.register<TasksService>('TasksServiceSingleton', TasksService, {
-  dependencies: ['TaskRepositorySingleton'],
-  singleton: true,
-});
-
-iocContainer.register<TasksController>('TasksController', TasksController, {
-  dependencies: ['TasksServiceSingleton'],
-});
-*/
-
 export const container = Object.freeze(iocContainer)

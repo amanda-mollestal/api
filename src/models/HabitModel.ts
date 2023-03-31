@@ -29,33 +29,57 @@ const habitSchema = new Schema<IHabit>({
   completedDates: {
     type: [String],
     unique: true,
-    validate: {
-      validator: function(arr: string[]) {
-        return arr.length === new Set(arr).size;
+    validate: [
+      {
+        validator: function (arr: string[]) {
+          // Check that all strings in the array are unique
+          return arr.length === new Set(arr).size
+        },
+        message: 'You have already completed this habit today'
       },
-      message: 'You have already completed this habit today'
-    }
+      {
+        validator: function (arr: string[]) {
+          // Check that all strings in the array have the format "YYYY-MM-DD"
+          return arr.every(date => /^\d{4}-\d{2}-\d{2}$/.test(date))
+        },
+        message: 'All completedDates must have the format "YYYY-MM-DD'
+      }
+    ]
   }
 })
+
+
+/*function validateToday(arr: string[]) {
+  return arr.length === new Set(arr).size;
+}*/
+
+/*function validateCompletedDates(arr: string[]) {
+  for (const date of arr) {
+    if (!/^\d{4}-\d{2}-\d{2}$/.test(date)) {
+      return false
+    }
+  }
+  return true
+}*/ 
 
 habitSchema.virtual('id').get(function (this: IHabit) {
   return this._id.toHexString()
 })
 
 habitSchema.pre<IHabit>('save', async function (next) {
-  const habit = this;
+  const habit = this
 
   // Check if a habit with the same title and ownerId already exists
-  const existingHabit = await HabitModel.findOne({ title: habit.title, ownerId: habit.ownerId });
+  const existingHabit = await HabitModel.findOne({ title: habit.title, ownerId: habit.ownerId })
 
   if (existingHabit && this.isNew) {
-    const err = new Error('A habit with the same title already exists');
+    const err = new Error('A habit with the same title already exists')
     err.name = 'ExistingHabitError'
-    return next(err);
+    return next(err)
   }
 
-  next();
-});
+  next()
+})
 
 
 const convertOptions = {
@@ -70,7 +94,6 @@ const convertOptions = {
   transform: (doc: any, ret: any) => {
     delete ret._id
     delete ret.__v
-    //ret.completedDates.forEach((date: any) => delete date._id)
   },
 }
 

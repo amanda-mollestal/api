@@ -3,9 +3,17 @@ import { WebhookRepository } from '../repositoires/WebhookRepository'
 import { IWebhook } from '../models/WebhookModel'
 import { WebhookEvent } from '../models/WebhookModel'
 
-
+/**
+ * Service class for handling Webhook-related business logic.
+ */
 export class WebhookService extends MongooseServiceBase<IWebhook> {
   repository: WebhookRepository
+
+  /**
+   *  Creates a new instance of the WebhookService class.
+   * 
+   * @param {WebhookRepository} repository The Webhook repository used by the service.
+  */
   constructor(repository: WebhookRepository) {
     super(repository)
     this.repository = repository
