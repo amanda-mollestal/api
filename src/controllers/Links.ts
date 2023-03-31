@@ -57,24 +57,21 @@ export const loginLinks = {
 // function that takes habitTitle and returns the links for that habit
 
 export const createLinks = (habitTitle: string) => ({
-  return: {
     self: { href: '/habits', title: 'Create a new habit' },
     getHabit: { href: `/habits/${habitTitle}`, title: 'View this habit', method: 'GET' },
     replaceHabit: { href: `/habits/${habitTitle}`, title: 'Update everyting in this habit', method: 'PUT' },
     updateHabit: { href: `/habits/${habitTitle}`, title: 'Update this habit partially', method: 'PATCH' },
-    deleteHabit: { href: `/habits/${habitTitle}`, title: 'Delete this habit', method: 'DELETE' }
-  }
+    deleteHabit: { href: `/habits/${habitTitle}`, title: 'Delete this habit', method: 'DELETE' },
 })
 
 export const findLinks = (habitTitle: string) => ({
-  return: {
     self: { href: `/habits/${habitTitle}`, title: 'View this habit' },
     complete: { href: `/habits/${habitTitle}/complete`, title: 'Mark this habit as completed', method: 'POST' },
     replaceHabit: { href: `/habits/${habitTitle}`, title: 'Update everyting in this habit', method: 'PUT' },
     updateHabit: { href: `/habits/${habitTitle}`, title: 'Update this habit partially', method: 'PATCH' },
     deleteHabit: { href: `/habits/${habitTitle}`, title: 'Delete this habit', method: 'DELETE' },
     getHabits: { href: '/habits', title: 'View all habits', method: 'GET' },
-  }
+
 })
 
 export const findAllLinks = {
@@ -104,7 +101,6 @@ export const findAllLinks = {
 }
 
 export const completeLinks = (habitTitle: string) => ({
-  return: {
     self: { href: `/habits/${habitTitle}`, title: 'Mark this habit as completed' },
     revert: { href: `/habits/${habitTitle}/revert`, title: 'Undo this completion', method: 'POST' },
     getHabit: { href: `/habits/${habitTitle}`, title: 'View this habit', method: 'GET' },
@@ -112,11 +108,9 @@ export const completeLinks = (habitTitle: string) => ({
     updateHabit: { href: `/habits/${habitTitle}`, title: 'Update this habit partially', method: 'PATCH' },
     deleteHabit: { href: `/habits/${habitTitle}`, title: 'Delete this habit', method: 'DELETE' },
     getHabits: { href: '/habits', title: 'View all habits', method: 'GET' }
-  }
 })
 
 export const undoLinks = (habitTitle: string) => ({
-  return: {
     self: { href: `/habits/${habitTitle}/revert`, title: 'Undo todays completion', method: 'POST' },
     complete: { href: `/habits/${habitTitle}/complete`, title: 'Mark this habit as completed', method: 'POST' },
     getHabit: { href: `/habits/${habitTitle}`, title: 'View this habit', method: 'GET' },
@@ -124,12 +118,9 @@ export const undoLinks = (habitTitle: string) => ({
     updateHabit: { href: `/habits/${habitTitle}`, title: 'Update this habit partially', method: 'PATCH' },
     deleteHabit: { href: `/habits/${habitTitle}`, title: 'Delete this habit', method: 'DELETE' },
     getHabits: { href: '/habits', title: 'View all habits', method: 'GET' },
-
-  }
 })
 
 export const partiallyLinks = (habitTitle: string) => ({
-  return: {
     self: { href: `/habits/${habitTitle}`, title: 'Update this habit partially', method: 'PATCH' },
     getHabit: { href: `/habits/${habitTitle}`, title: 'View this habit' },
     complete: { href: `/habits/${habitTitle}/complete`, title: 'Mark this habit as completed', method: 'POST' },
@@ -137,12 +128,9 @@ export const partiallyLinks = (habitTitle: string) => ({
     replaceHabit: { href: `/habits/${habitTitle}`, title: 'Update everyting in this habit', method: 'PUT' },
     deleteHabit: { href: `/habits/${habitTitle}`, title: 'Delete this habit', method: 'DELETE' },
     getHabits: { href: '/habits', title: 'View all habits', method: 'GET' },
-
-  }
 })
 
 export const updateLinks = (habitTitle: string) => ({
-  return: {
     self: { href: `/habits/${habitTitle}`, title: 'Update this habit partially', method: 'PATCH' },
     getHabit: { href: `/habits/${habitTitle}`, title: 'View this habit' },
     complete: { href: `/habits/${habitTitle}/complete`, title: 'Mark this habit as completed', method: 'POST' },
@@ -151,19 +139,16 @@ export const updateLinks = (habitTitle: string) => ({
     deleteHabit: { href: `/habits/${habitTitle}`, title: 'Delete this habit', method: 'DELETE' },
     getHabits: { href: '/habits', title: 'View all habits', method: 'GET' },
 
-  }
 })
 
 export const deleteLinks = (habitTitle: string) => ({
-  return: {
     self: { href: `/habits/${habitTitle}`, title: 'Deleted this habit', method: 'DELETE' },
     getHabits: { href: '/habits', title: 'View all habits' },
     create: { href: '/habits', title: 'Create a new habit', method: 'POST' }
-  }
+
 })
 
 export const webhookRegisterLinks = {
-  return: {
     self: { href: '/habits/webhook/register', title: 'Register a webhook for habit events', method: 'POST' },
     webhookUnregister: {
       href: '/habits/webhook/unregister',
@@ -171,7 +156,6 @@ export const webhookRegisterLinks = {
       method: 'POST',
       body: {
         id: { type: 'string', required: true, description: 'The id of the webhook to unregister' }
-      }
     }
   }
 }

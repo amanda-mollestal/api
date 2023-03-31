@@ -19,40 +19,56 @@ export class WebhookService extends MongooseServiceBase<IWebhook> {
     this.repository = repository
   }
 
-  async register (url: string , ownerId: string, events: string[]){
+  /**
+   * Registers a new webhook.
+   * 
+   * @param {string} url - The url of the webhook.
+   * @param {string} ownerId - The id of the user who owns the webhook.
+   * @param {string[]} events - The events that the webhook will be notified of.
+   * @returns {IWebhook} - The newly registered webhook.
+   */
+  async register (url: string , ownerId: string, events: string[]): Promise<IWebhook> {
 
-    const newWebhook: IWebhook = {
-      url: url,
-      ownerId: ownerId,
-      events: []
-    } as IWebhook  
-
-    console.log(WebhookEvent.COMPLETED)
-    events.forEach(event => {
-      
-      if (event.toLocaleLowerCase() === 'completed') {
-        newWebhook.events.push(WebhookEvent.COMPLETED)
-      } else if (event.toLocaleLowerCase() === 'reverted') {
-        newWebhook.events.push(WebhookEvent.REVERTED)
-      } else if (event.toLocaleLowerCase() === 'updated') {
-        newWebhook.events.push(WebhookEvent.UPDATED)
+    try {
+      const newWebhook: IWebhook = {
+        url: url,
+        ownerId: ownerId,
+        events: []
+      } as IWebhook  
+  
+      if(events.length > 0) {
+        events.forEach(event => {
+        
+          if (event.toLocaleLowerCase() === 'completed') {
+            newWebhook.events.push(WebhookEvent.COMPLETED)
+          } else if (event.toLocaleLowerCase() === 'reverted') {
+            newWebhook.events.push(WebhookEvent.REVERTED)
+          } else if (event.toLocaleLowerCase() === 'updated') {
+            newWebhook.events.push(WebhookEvent.UPDATED)
+          }
+        })
+        const result = await this.repository.insert(newWebhook)
+        return result as IWebhook
       }
-    })
-    console.log(newWebhook)
-
-    const result = await this.repository.insert(newWebhook)
-
-    console.log(result)
-    return result as IWebhook
+    } catch (error) {
+      error.name = 'WebhookValidationError'
+      error.message = 'Missing required fields, please provide all required fields and try again'
+      throw error
+    }
 
   }
 
+  /**
+   * Unregisters a webhook.
+   * 
+   * @param {string} webhookId - The id of the webhook to unregister.
+   * @param {string} ownerId - The id of the user who owns the webhook.
+   * 
+   */
   async unregister (webhookId: string, ownerId: string) {
 
     console.log(webhookId)
     const webhook = await this.repository.getById(webhookId) 
-
-    console.log(webhook)
  
     if (webhook.ownerId !== ownerId) {
       throw new Error('Unauthorized')
