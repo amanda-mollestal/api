@@ -12,6 +12,6 @@ The API documentation can be found in the `documentation.md` file in this reposi
 
 A Postman collection with pre-built requests for the API is also included in this repository. To use it, import the collection into Postman.
 
-## License
 
-This project is licensed under the MIT License. See the `LICENSE` file for more information.
+
+
