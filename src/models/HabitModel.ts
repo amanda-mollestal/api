@@ -78,6 +78,7 @@ habitSchema.set('timestamps', true)
 habitSchema.set('toObject', convertOptions)
 habitSchema.set('toJSON', convertOptions)
 
+
 export interface IHabitModel extends Model<IHabit> { }
 
 export const HabitModel: IHabitModel = model<IHabit, IHabitModel>('Habit', habitSchema);

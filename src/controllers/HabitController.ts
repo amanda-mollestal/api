@@ -1,27 +1,34 @@
 import createError from 'http-errors'
 import { Request, Response, NextFunction } from 'express'
 import { HabitService } from '../services/HabitService'
-import { HabitModel, IHabit } from '../models/HabitModel'
+import { IHabit } from '../models/HabitModel'
 import { AuthenticatedUserRequest } from './IAuthenticatedUserRequest'
-//import { TasksService } from '../services/TasksService'
+import { completeLinks, createLinks, deleteLinks, findAllLinks, findLinks, partiallyLinks, undoLinks, updateLinks } from './Links'
 
+/**
+ * Controller class for handling Habit-related HTTP requests.
+ */
 export class HabitController {
   #service: HabitService
 
+  /**
+  * Creates a new instance of the HabitController class.
+  * @param {HabitService} service The Habit service used by the controller.
+  */
   constructor(service: HabitService) {
     this.#service = service
   }
 
-  async test(req: Request, res: Response, next: NextFunction) {
-    console.log('Hello from HabitController')
-    res.json({ message: 'Hello from HabitController' })
-  }
 
-  async create(req: AuthenticatedUserRequest, res: Response, next: NextFunction) {
+  /**
+   * Handles the HTTP POST /habits request.
+   *
+   * @param {AuthenticatedUserRequest} req -  The request object.
+   * @param {Response} res - The response object.
+   * @param {NextFunction} next - The next function in the middleware chain.
+   */
+  async create(req: AuthenticatedUserRequest, res: Response, next: NextFunction): Promise<void> {
     try {
-
-
-      console.log(req.body)
 
       const habit: IHabit = {
         title: req.body.title,
@@ -30,15 +37,23 @@ export class HabitController {
       } as IHabit
 
       if (req.body.completedDates) {
-        habit.completedDates = req.body.completedDates;
+        habit.completedDates = req.body.completedDates
       }
 
-      const result: IHabit = await this.#service.insert(habit);
+      const result: IHabit = await this.#service.insert(habit)
 
-      console.log(result)
-      res.status(201).json(result)
+      const habitTitle = result.title.replace(/ /g, '-')
 
-      
+
+      const links = createLinks(habitTitle)
+
+      res.status(201).json({
+        message: 'Habit created successfully.',
+        habit: result,
+        _links: links,
+      })
+
+
       /*
       const location = new URL(
         `${req.protocol}://${req.get('host')}${req.baseUrl}/${task._id}`
@@ -48,10 +63,6 @@ export class HabitController {
 
     } catch (error) {
       console.log(error)
-      console.log(error.name)
-      console.log(error.code)
-
-      // Send correct error code and message
 
       if (error.name === 'ExistingHabitError') {
         next(createError(400, 'Habit with that title already exists'))
@@ -59,9 +70,9 @@ export class HabitController {
       }
 
       if (error.code === 11000) {
-        next(createError(400, 'Duplicate key error'))
+        next(createError(400, 'Habit with that title already exists'))
         return
-      } 
+      }
       next(error)
     }
   }
@@ -89,12 +100,16 @@ export class HabitController {
 
   async findAll(req: AuthenticatedUserRequest, res: Response, next: NextFunction) {
     try {
-      console.log(req.user)
 
       const filter = { ownerId: req.user.id }
 
       const habits = await this.#service.get(filter)
-      res.json(habits)
+
+
+
+      //console.log(`req.protocol: ${req.protocol} :// req.gethost: ${req.get('host')} req.baseUrl:  ${req.baseUrl}/`)
+
+      res.status(200).json({ habits: habits, _links: findAllLinks })
     } catch (error) {
       next(error)
     }
@@ -102,7 +117,11 @@ export class HabitController {
 
   async find(req: AuthenticatedUserRequest, res: Response, next: NextFunction) {
     try {
-      res.json(req.habit)
+      const habitTitle = req.habit.title.replace(/ /g, '-')
+
+      const links = findLinks(habitTitle)
+
+      res.status(200).json({ habit: req.habit, _links: links })
     } catch (error) {
       next(error)
     }
@@ -112,17 +131,24 @@ export class HabitController {
 
     try {
       const updatedHabit = await this.#service.addCompletedDate(req.habit.id)
-      console.log(updatedHabit)
-
       req.habit = updatedHabit
-      //res.json(updatedHabit)
-      res.status(204).end()
+
+      const habitTitle = req.habit.title.replace(/ /g, '-')
+
+      const links = completeLinks(habitTitle)
+
+
+      res.status(204).json({
+        message: 'Habit completed successfully',
+        habit: updatedHabit,
+        _links: links
+      }).end()
       return next()
 
     } catch (error) {
       if (error.name === 'ValidationError') {
         next(createError(400, 'This habit has already been completed today.'))
-        return 
+        return
       }
       next(error)
     }
@@ -133,10 +159,20 @@ export class HabitController {
     try {
       const updatedHabit = await this.#service.undoCompletedDate(req.habit.id)
       req.habit = updatedHabit
-      res.status(204).end()
+
+      const habitTitle = req.habit.title.replace(/ /g, '-')
+
+      const links = undoLinks(habitTitle)
+
+      res.status(204).json({
+        message: 'Habit reverted successfully',
+        habit: updatedHabit,
+        _links: links
+      }).end()
       return next()
     } catch (error) {
       console.log(error)
+      next(error)
     }
   }
 
@@ -156,10 +192,10 @@ export class HabitController {
           next(createError(400, 'You have already completed this habit today.'))
           return 
         }*/ /*
-        next(error)
-      }
-  }*/
-  
+next(error)
+}
+}*/
+
 
   async partiallyUpdate(req: AuthenticatedUserRequest, res: Response, next: NextFunction) {
 
@@ -168,13 +204,22 @@ export class HabitController {
       const updatedHabit = await this.#service.update(req.habit.id, req.body)
       req.habit = updatedHabit
 
-      res.json(updatedHabit).status(204)
+      const habitTitle = req.habit.title.replace(/ /g, '-')
+
+      const links = partiallyLinks(habitTitle)
+
+      res.status(204).json({
+        message: 'Habit updated successfully',
+        habit: updatedHabit,
+        _links: links
+      }).end()
+      return next()
 
     } catch (error) {
       console.log(error)
       if (error.name === 'ValidationError') {
         next(createError(400, error.message))
-        return 
+        return
       }
       next(error)
     }
@@ -183,7 +228,6 @@ export class HabitController {
   async update(req: AuthenticatedUserRequest, res: Response, next: NextFunction) {
     try {
 
-      console.log('heeelo from update')
       const habit: IHabit = {
         title: req.body.title,
         description: req.body.description,
@@ -191,18 +235,30 @@ export class HabitController {
       } as IHabit
 
       if (req.body.completedDates) {
-        habit.completedDates = req.body.completedDates;
+        habit.completedDates = req.body.completedDates
       }
 
       const updatedHabit = await this.#service.replace(req.habit.id, habit)
 
       req.habit = updatedHabit
-      res.json(updatedHabit)
+
+
+      const habitTitle = req.habit.title.replace(/ /g, '-')
+
+      const links = updateLinks(habitTitle)
+      res.json(
+        {
+          message: 'Habit updated successfully',
+          habit: updatedHabit,
+          _links: links
+        }
+      ).status(204).end()
+      return next()
     } catch (error) {
       console.log(error)
       if (error.name === 'ValidationError') {
         next(createError(400, error.message))
-        return 
+        return
       }
       next(error)
     }
@@ -211,13 +267,23 @@ export class HabitController {
   async delete(req: AuthenticatedUserRequest, res: Response, next: NextFunction) {
     try {
       await this.#service.delete(req.habit.id)
+      const habitTitle = req.habit.title.replace(/ /g, '-')
+
+      const links = deleteLinks(habitTitle)
+
       req.habit = null
-      res.status(204).end()
+
+
+      res.status(204).json({
+        message: 'Habit deleted successfully',
+        _links: links
+      }).end()
     } catch (error) {
       console.log(error)
       next(error)
     }
   }
+
 
 
 }

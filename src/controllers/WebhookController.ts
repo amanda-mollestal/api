@@ -3,10 +3,11 @@ import { IWebhook, WebhookEvent } from '../models/WebhookModel'
 import { AuthenticatedUserRequest } from './IAuthenticatedUserRequest'
 import { Request, Response, NextFunction } from 'express'
 import axios from 'axios'
+import { webhookRegisterLinks } from './Links'
 
 export class WebhookController {
   #service: WebhookService
-  
+
   constructor(service: WebhookService) {
     this.#service = service
   }
@@ -18,7 +19,7 @@ export class WebhookController {
 
       const result = await this.#service.register(req.body.url, req.user.id, req.body.events)
 
-    
+      const links = webhookRegisterLinks
       res.status(201).json(result)
     } catch (error) {
       console.log(error)
@@ -39,7 +40,7 @@ export class WebhookController {
 
       const result = await this.#service.get(conditions)
 
-      for(const webhook of result) {
+      for (const webhook of result) {
         console.log(webhook)
         const response = await axios.post(webhook.url, {
           event: event,
@@ -47,12 +48,12 @@ export class WebhookController {
         })
         console.log(response)
       }
-        
+
       console.log(result)
 
       /*const result = await this.#service.getWebhook(req.body.habitId, req.user.id)
 
-      this.fireWebhook(result)*/ 
+      this.fireWebhook(result)*/
       //console.log(result)
 
       //res.status(200).json(result)

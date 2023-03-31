@@ -76,11 +76,11 @@ function trimString(value: string): string {
 
 
 // DON'T KNOW WHICH ONE TO USE YET
-
+/*
 // This approach is useful if you want to have the authentication code as part of the user instance.
 userSchema.methods.comparePassword = async function (password: string): Promise<boolean> {
   return bcrypt.compare(password, this.password)
-}
+}*/
 
 //This approach is useful if you want to keep all authentication-related code within the Mongoose model.
 userSchema.statics.authentication = async function (username: string, password: string): Promise<IUser> {
@@ -127,7 +127,7 @@ userSchema.set('toJSON', convertOptions)
 userSchema.post<IUser>('save', function (error: any, doc: IUser, next: any) {
   if (error.code === 11000) {
     error.status = 409
-    error.message = 'Username or email in use'
+    error.message = 'Username or email already in use'
     next(error)
   }
 
