@@ -3,6 +3,8 @@
 
 The following table lists the available resource URIs and their corresponding brief descriptions, as well as any required headers or body:
 
+Base URI: 'https://habitapi.herokuapp.com/api/v1'
+
 | HTTP Method | URI | Description | Required Headers | Required Body |
 | --- | --- | --- | --- | --- |
 | GET | / | Returns a welcome message. | N/A | N/A |
@@ -16,5 +18,5 @@ The following table lists the available resource URIs and their corresponding br
 | PATCH | /habits/:title | Updates one or more fields of the habit with the specified title. | `Authorization: Bearer <access_token>` | Any of `title`, `description`, `completedDates` |
 | PUT | /habits/:title | Replaces the habit with the specified title with a new habit. | `Authorization: Bearer <access_token>` | `title`, `description` |
 | DELETE | /habits/:title | Deletes the habit with the specified title. | `Authorization: Bearer <access_token>` | N/A |
-| POST | /habits/webhook/register | Registers a new webhook for the authenticated user with the provided URL and event type. | `Authorization: Bearer <access_token>` | `url`, `events` |
-| POST | /habits/webhook/unregister | Unregisters an existing webhook for the authenticated user with the provided URL and event type. | `Authorization: Bearer <access_token>` | `url`, `events` |
+| POST | /habits/webhook/register | Registers a new webhook for the authenticated user with the provided URL and event type. | `Authorization: Bearer <access_token>` | `url`, `events: (possible values: "completed", "updated", "reverted")` |
+| POST | /habits/webhook/unregister | Unregisters an existing webhook for the authenticated user with the provided URL and event type. | `Authorization: Bearer <access_token>` | `url` |

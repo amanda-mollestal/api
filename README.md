@@ -1,4 +1,5 @@
 
+# Base URI: 'https://habitapi.herokuapp.com/api/v1'
 
 # Habit Tracker API
 
