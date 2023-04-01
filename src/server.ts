@@ -38,6 +38,7 @@ async function startServer(): Promise<void> {
 
     // Error handler.
     app.use((err: any, req: Request, res: Response, next: NextFunction) => {
+
       if (!err.status) {
         const cause = err
         err = createError(500)

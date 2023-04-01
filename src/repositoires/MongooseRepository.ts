@@ -84,7 +84,6 @@ export class MongooseRepositoryBase<T> {
 
   #ensureValidPropertyNames(data: any) {
     for (const key of Object.keys(data)) {
-      console.log('key', key);
       if (!this.allowedModelPropertyNames.includes(key)) {
         const error = new Error(`'${key}' is not a valid property name.`);
         error.name = 'ValidationError';

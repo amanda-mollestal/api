@@ -54,7 +54,6 @@ export class HabitController {
       })
 
     } catch (error) {
-      console.log(error)
 
       if (error.name === 'ExistingHabitError') {
         next(createError(400, 'Habit with that title already exists'))
@@ -234,7 +233,12 @@ next(error)
 
     try {
 
+      if (req.body === undefined || req.body === null || Object.keys(req.body).length === 0) {
+        return next(createError(400, 'You must provide a body to update the habit.'))
+      }
+
       const updatedHabit = await this.#service.update(req.habit.id, req.body)
+
       req.habit = updatedHabit
 
       const habitTitle = req.habit.title.replace(/ /g, '-')
@@ -249,7 +253,6 @@ next(error)
       return next()
 
     } catch (error) {
-      console.log(error)
       if (error.name === 'ValidationError') {
         next(createError(400, error.message))
         return
@@ -281,7 +284,6 @@ next(error)
       const updatedHabit = await this.#service.replace(req.habit.id, habit)
 
       req.habit = updatedHabit
-
 
       const habitTitle = req.habit.title.replace(/ /g, '-')
 
@@ -325,7 +327,6 @@ next(error)
         _links: links
       }).end()
     } catch (error) {
-      console.log(error)
       next(error)
     }
   }

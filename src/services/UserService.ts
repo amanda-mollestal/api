@@ -64,7 +64,6 @@ export class UserService extends MongooseServiceBase<IUser> {
 
       const user = await this.repository.getById(payload.sub as string)
 
-      console.log(user)
       return user
 
     } catch (error) {

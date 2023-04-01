@@ -94,7 +94,6 @@ export class WebhookController {
       await this.#service.unregister(req.body.id, req.user.id)
       res.status(204).end()
     } catch (error) {
-      console.log(error)
       next(error)
     }
   }

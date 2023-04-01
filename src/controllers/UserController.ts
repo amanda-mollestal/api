@@ -28,7 +28,6 @@ export class UserController {
    */
   async register(req: Request, res: Response, next: NextFunction) {
     try {
-
       const result: IUser = await this.#service.insert({
         email: req.body.email,
         password: req.body.password,
@@ -41,12 +40,11 @@ export class UserController {
         _links: registerLinks,
       })
     } catch (error) {
-      console.log(error)
-
-      /*const err = createError(
-        error.name === 'ValidationError' ? 400 : 500
-      )
-      err.cause = error*/
+      if (error.name === 'ValidationError') {
+        error.status = 400
+        error.message = 'Invalid data provided. Make sure to provide a valid email, username and password.'
+        next(error)
+      }
       next(error)
     }
   }
@@ -63,7 +61,7 @@ export class UserController {
 
       res.status(200).json({
         message: 'User login successful.',
-        'access-token': accessToken,
+        'access_token': accessToken,
         _links: loginLinks
       })
 
@@ -94,7 +92,8 @@ export class UserController {
       req.user = user
       next()
     } catch (error) {
-      if (error.name === 'JsonWebTokenError') {
+
+      if (error.name === 'JsonWebTokenError' || error.name === 'TypeError') {
         error.status = 401
         error.message = 'Access token invalid or not provided.'
         next(error)
