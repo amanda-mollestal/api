@@ -1,5 +1,5 @@
 import { IoCContainer } from '../util/IoCContainer'
-import * as dotenv from 'dotenv'
+//import * as dotenv from 'dotenv'
 import { HabitModel, IHabitModel } from '../models/HabitModel'
 import { HabitRepository } from '../repositoires/HabitRepository'
 import { HabitService } from '../services/HabitService'
@@ -16,7 +16,7 @@ import { WebhookController } from '../controllers/WebhookController'
 
 const iocContainer = new IoCContainer()
 
-dotenv.config()
+//dotenv.config()
 
 iocContainer.register('ConnectionString', process.env.DB_CONNECTION_STRING)
 

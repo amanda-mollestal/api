@@ -24,12 +24,19 @@ router.get('/', (req: Request, res: Response) => {
         password: { type: 'string', required: true, description: 'The password of the user' }
       }
     },
-    habits: {
+    getHabits: {
       href: '/habits', method: 'GET', title: 'Get all habits',
       headers: {
         'Authorization': { type: 'string', required: true, description: "The access token in the format 'Bearer {access_token}'." }
       }
     },
+    create: {
+      href: '/habits', title: 'Create a new habit', method: 'POST',
+      headers: {
+        "Authorization": { type: "string", required: true, description: "The access token in the format 'Bearer {access_token}'." }
+      }
+    },
+    
   }
 
 
