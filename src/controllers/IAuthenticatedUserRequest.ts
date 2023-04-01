@@ -7,4 +7,5 @@ export interface AuthenticatedUserRequest extends Request {
   user?: IUser;
   habit?: IHabit;
   body: any;
+  headers: any;
 }
