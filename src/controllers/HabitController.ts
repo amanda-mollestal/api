@@ -55,6 +55,10 @@ export class HabitController {
 
     } catch (error) {
       
+      if(error.errors?.completedDates) {
+        next(createError(400, error.errors.completedDates.message))
+      }
+
       if (error.name === 'ValidationError') {
         next(createError(400, 'Invalid data provided. Make sure to provide a valid title and description. Title: { type: String, required: true, minlength: 1 } Description: { type: String,required: true, minlength: 1 }'))
         return
@@ -326,8 +330,9 @@ next(error)
       await this.#service.delete(req.habit.id)
 
       req.habit = null
-      res.status(204)
+      res.status(204).end()
     } catch (error) {
+      console.log(error)
       next(error)
     }
   }
