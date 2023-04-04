@@ -91,6 +91,8 @@ export class UserController {
       next()
     } catch (error) {
 
+      console.log(error)
+
       if(req.url?.trim() === '/webhook/register') {
         next(createError(401, 'You must be authenticated to register a webhook'))
       }
@@ -103,7 +105,7 @@ export class UserController {
         next(createError(401, 'Access token invalid or not provided.'))
       }
 
-      next(error)
+      next(createError(401, 'Access token invalid or not provided.'))
     }
 
 
