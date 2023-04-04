@@ -41,18 +41,18 @@ export class WebhookController {
         _links: links,
       })
     } catch (error) {
-      console.log(error)
 
+      
       if (error.name === 'WebhookUrlError') {
-        next(createError(400, error.message))
+        next(createError(400, 'Invalid url, please provide a valid url and try again'))
       }
 
       if (error.name === 'WebhookDuplicateError') {
-        next(createError(400, error.message))
+        next(createError(400, 'Webhook already exists, please provide a unique url and try again'))
       }
 
       if (error.name === 'WebhookEventError') {
-        next(createError(400, error.message))
+        next(createError(400, 'Invalid event. Can be "completed", "reverted", "updated", or a combination of them with a "," separating them.'))
       }
 
       if(error.name === 'WebhookValidationError' ) {
@@ -93,7 +93,7 @@ export class WebhookController {
         }
       }
     } catch (error) {
-      console.log('Error sending webhook')
+      console.log('Error sending webhook. Error: ', error)
     }
   }
 

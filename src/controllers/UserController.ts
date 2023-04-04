@@ -78,7 +78,6 @@ export class UserController {
   async validateJwt(req: AuthenticatedUserRequest, res: Response, next: NextFunction) {
     try {
 
-      
       const [authenticationScheme, token] = req.headers.authorization?.split(' ')
 
       if (authenticationScheme !== 'Bearer') {
@@ -91,7 +90,7 @@ export class UserController {
       next()
     } catch (error) {
 
-      if(req.url?.trim() === '/webhook/register') {
+      if (req.url?.trim() === '/webhook/register') {
         return next(createError(401, 'You must be authenticated to register a webhook'))
       }
 
@@ -101,8 +100,6 @@ export class UserController {
 
       return next(createError(401, 'Access token invalid or not provided.'))
     }
-
-
 
   }
 

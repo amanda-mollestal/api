@@ -98,7 +98,7 @@ export class HabitController {
       const habit = await this.#service.getOne(filter)
 
       if (!habit) {
-        next(createError(404, 'The requested resource was not found.'))
+        next(createError(404, 'The requested resource was not found. Make sure to replace spaces with dashes. Example: "My Habit" becomes "My-Habit"'))
         return
       }
 
@@ -164,7 +164,6 @@ export class HabitController {
       const habitTitle = req.habit.title.replace(/ /g, '-')
 
       const links = completeLinks(habitTitle)
-
 
       res.status(200).json({
         message: 'Habit completed successfully',
@@ -310,7 +309,6 @@ next(error)
       ).status(201)
       return next()
     } catch (error) {
-      console.log(error)
       if (error.name === 'ValidationError') {
         next(createError(400, error.message))
         return
@@ -332,8 +330,7 @@ next(error)
       req.habit = null
       res.status(204).end()
     } catch (error) {
-      console.log(error)
-      next(error)
+      next(createError(400, 'Something went wrong while deleting the habit.'))
     }
   }
 

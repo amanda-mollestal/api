@@ -1,0 +1,1396 @@
+{
+	"info": {
+		"_postman_id": "13aaf9b3-eb4a-4aef-b873-2997632fc958",
+		"name": "1DV027 - API",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "18484219"
+	},
+	"item": [
+		{
+			"name": "GET root /",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://habitapi.herokuapp.com/api/v1/",
+					"protocol": "https",
+					"host": [
+						"habitapi",
+						"herokuapp",
+						"com"
+					],
+					"path": [
+						"api",
+						"v1",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GET /user",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://habitapi.herokuapp.com/api/v1/user",
+					"protocol": "https",
+					"host": [
+						"habitapi",
+						"herokuapp",
+						"com"
+					],
+					"path": [
+						"api",
+						"v1",
+						"user"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Register new user",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": [
+						{
+							"key": "username",
+							"value": "test123",
+							"type": "text"
+						},
+						{
+							"key": "password",
+							"value": "password123",
+							"type": "text"
+						},
+						{
+							"key": "email",
+							"value": "test@gmail.com",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "https://habitapi.herokuapp.com/api/v1/user/register",
+					"protocol": "https",
+					"host": [
+						"habitapi",
+						"herokuapp",
+						"com"
+					],
+					"path": [
+						"api",
+						"v1",
+						"user",
+						"register"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Register new user BAD NO EMAIL",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": [
+						{
+							"key": "username",
+							"value": "test123",
+							"type": "text"
+						},
+						{
+							"key": "password",
+							"value": "password123",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "https://habitapi.herokuapp.com/api/v1/user/register",
+					"protocol": "https",
+					"host": [
+						"habitapi",
+						"herokuapp",
+						"com"
+					],
+					"path": [
+						"api",
+						"v1",
+						"user",
+						"register"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Register new user BAD NO VALID EMAIL",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": [
+						{
+							"key": "username",
+							"value": "test123",
+							"type": "text"
+						},
+						{
+							"key": "password",
+							"value": "password123",
+							"type": "text"
+						},
+						{
+							"key": "email",
+							"value": "notavalidemail",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "https://habitapi.herokuapp.com/api/v1/user/register",
+					"protocol": "https",
+					"host": [
+						"habitapi",
+						"herokuapp",
+						"com"
+					],
+					"path": [
+						"api",
+						"v1",
+						"user",
+						"register"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Login BAD WRONG PASSWORD",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": [
+						{
+							"key": "username",
+							"value": "test123",
+							"type": "text"
+						},
+						{
+							"key": "password",
+							"value": "notrightpassword",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "https://habitapi.herokuapp.com/api/v1/user/login",
+					"protocol": "https",
+					"host": [
+						"habitapi",
+						"herokuapp",
+						"com"
+					],
+					"path": [
+						"api",
+						"v1",
+						"user",
+						"login"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Login BAD NO PASSWORD",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": [
+						{
+							"key": "username",
+							"value": "test123",
+							"type": "text"
+						},
+						{
+							"key": "password",
+							"value": "notrightpassword",
+							"type": "text",
+							"disabled": true
+						}
+					]
+				},
+				"url": {
+					"raw": "https://habitapi.herokuapp.com/api/v1/user/login",
+					"protocol": "https",
+					"host": [
+						"habitapi",
+						"herokuapp",
+						"com"
+					],
+					"path": [
+						"api",
+						"v1",
+						"user",
+						"login"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "View all habits BAD CREDENTIALS",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://habitapi.herokuapp.com/api/v1/habits",
+					"protocol": "https",
+					"host": [
+						"habitapi",
+						"herokuapp",
+						"com"
+					],
+					"path": [
+						"api",
+						"v1",
+						"habits"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Login user",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"if (pm.response.code === 200) {\r",
+							"    const responseBody = JSON.parse(pm.response.text())\r",
+							"    pm.environment.set(\"access_token\", responseBody.access_token)\r",
+							"}\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": [
+						{
+							"key": "username",
+							"value": "test123",
+							"type": "text"
+						},
+						{
+							"key": "password",
+							"value": "password123",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "https://habitapi.herokuapp.com/api/v1/user/login",
+					"protocol": "https",
+					"host": [
+						"habitapi",
+						"herokuapp",
+						"com"
+					],
+					"path": [
+						"api",
+						"v1",
+						"user",
+						"login"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Register webhook BAD CREDENTIALS",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"if (pm.response.code === 200) {\r",
+							"    const responseBody = JSON.parse(pm.response.text())\r",
+							"    pm.environment.set(\"access_token\", responseBody.access_token)\r",
+							"}\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": []
+				},
+				"url": {
+					"raw": "https://habitapi.herokuapp.com/api/v1/habits/webhook/register",
+					"protocol": "https",
+					"host": [
+						"habitapi",
+						"herokuapp",
+						"com"
+					],
+					"path": [
+						"api",
+						"v1",
+						"habits",
+						"webhook",
+						"register"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Register webhook",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"if (pm.response.code === 200) {\r",
+							"    const responseBody = JSON.parse(pm.response.text())\r",
+							"    pm.environment.set(\"access_token\", responseBody.access_token)\r",
+							"}\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{access_token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": [
+						{
+							"key": "url",
+							"value": "https://webhook.site/917fd7de-368c-498c-9672-532e6883d32a",
+							"type": "text"
+						},
+						{
+							"key": "events",
+							"value": "completed, reverted, updated",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "https://habitapi.herokuapp.com/api/v1/habits/webhook/register",
+					"protocol": "https",
+					"host": [
+						"habitapi",
+						"herokuapp",
+						"com"
+					],
+					"path": [
+						"api",
+						"v1",
+						"habits",
+						"webhook",
+						"register"
+					]
+				},
+				"description": "KOLLA WEBHOOK:  \n[https://webhook.site/#!/917fd7de-368c-498c-9672-532e6883d32a](https://webhook.site/#!/917fd7de-368c-498c-9672-532e6883d32a)"
+			},
+			"response": []
+		},
+		{
+			"name": "Unregister webhook BAD URL",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"if (pm.response.code === 200) {\r",
+							"    const responseBody = JSON.parse(pm.response.text())\r",
+							"    pm.environment.set(\"access_token\", responseBody.access_token)\r",
+							"}\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{access_token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": [
+						{
+							"key": "url",
+							"value": "badurl",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "https://habitapi.herokuapp.com/api/v1/habits/webhook/unregister",
+					"protocol": "https",
+					"host": [
+						"habitapi",
+						"herokuapp",
+						"com"
+					],
+					"path": [
+						"api",
+						"v1",
+						"habits",
+						"webhook",
+						"unregister"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "View all habits",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"// Set Authorization header to use access token\r",
+							"pm.request.headers.add({\r",
+							"    key: 'Authorization',\r",
+							"  value: 'Bearer ' + pm.environment.get('access_token')\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{access_token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://habitapi.herokuapp.com/api/v1/habits",
+					"protocol": "https",
+					"host": [
+						"habitapi",
+						"herokuapp",
+						"com"
+					],
+					"path": [
+						"api",
+						"v1",
+						"habits"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Create habit BAD CREDENTIALS",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": []
+				},
+				"url": {
+					"raw": "https://habitapi.herokuapp.com/api/v1/habits",
+					"protocol": "https",
+					"host": [
+						"habitapi",
+						"herokuapp",
+						"com"
+					],
+					"path": [
+						"api",
+						"v1",
+						"habits"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Create habit BAD TITLE & DESC",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{access_token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": [
+						{
+							"key": "title",
+							"value": "",
+							"type": "text"
+						},
+						{
+							"key": "descripton",
+							"value": "",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "https://habitapi.herokuapp.com/api/v1/habits",
+					"protocol": "https",
+					"host": [
+						"habitapi",
+						"herokuapp",
+						"com"
+					],
+					"path": [
+						"api",
+						"v1",
+						"habits"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Create habit BAD DATE",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{access_token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"title\": \"A title\",\r\n    \"descripton\": \"A descripton\",\r\n    \"completedDates\": [\"BAD DATE\", \"2023-03-30\"]\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://habitapi.herokuapp.com/api/v1/habits",
+					"protocol": "https",
+					"host": [
+						"habitapi",
+						"herokuapp",
+						"com"
+					],
+					"path": [
+						"api",
+						"v1",
+						"habits"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Create habit",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{access_token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": [
+						{
+							"key": "title",
+							"value": "brush teeth",
+							"type": "text"
+						},
+						{
+							"key": "description",
+							"value": "Morning and night",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "https://habitapi.herokuapp.com/api/v1/habits",
+					"protocol": "https",
+					"host": [
+						"habitapi",
+						"herokuapp",
+						"com"
+					],
+					"path": [
+						"api",
+						"v1",
+						"habits"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Create habit 2",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{access_token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"title\": \"be active\",\r\n    \"description\": \"Gym, run, walk, yoga or stretch\",\r\n    \"completedDates\": [\"2023-03-15\", \"2023-03-17\", \"2023-03-19\", \"2023-03-20\"]\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://habitapi.herokuapp.com/api/v1/habits",
+					"protocol": "https",
+					"host": [
+						"habitapi",
+						"herokuapp",
+						"com"
+					],
+					"path": [
+						"api",
+						"v1",
+						"habits"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Create habit 3",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{access_token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"title\": \"vitamins\",\r\n    \"description\": \"Take vitamins at lunch\",\r\n    \"completedDates\": [\"2023-03-15\", \"2023-03-17\", \"2023-03-19\", \"2023-03-20\"]\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://habitapi.herokuapp.com/api/v1/habits",
+					"protocol": "https",
+					"host": [
+						"habitapi",
+						"herokuapp",
+						"com"
+					],
+					"path": [
+						"api",
+						"v1",
+						"habits"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Create habit BAD DUPLICATE TITLE",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{access_token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": [
+						{
+							"key": "title",
+							"value": "brush teeth",
+							"type": "text"
+						},
+						{
+							"key": "description",
+							"value": "Morning and night",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "https://habitapi.herokuapp.com/api/v1/habits",
+					"protocol": "https",
+					"host": [
+						"habitapi",
+						"herokuapp",
+						"com"
+					],
+					"path": [
+						"api",
+						"v1",
+						"habits"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "View all habits",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"// Set Authorization header to use access token\r",
+							"pm.request.headers.add({\r",
+							"    key: 'Authorization',\r",
+							"  value: 'Bearer ' + pm.environment.get('access_token')\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{access_token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://habitapi.herokuapp.com/api/v1/habits",
+					"protocol": "https",
+					"host": [
+						"habitapi",
+						"herokuapp",
+						"com"
+					],
+					"path": [
+						"api",
+						"v1",
+						"habits"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "View habit BAD URI",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{access_token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": [
+						{
+							"key": "title",
+							"value": "brush teeth",
+							"type": "text"
+						},
+						{
+							"key": "description",
+							"value": "Morning and night",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "https://habitapi.herokuapp.com/api/v1/habits/brushteeth",
+					"protocol": "https",
+					"host": [
+						"habitapi",
+						"herokuapp",
+						"com"
+					],
+					"path": [
+						"api",
+						"v1",
+						"habits",
+						"brushteeth"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "View habit BAD CREDENTIALS",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": [
+						{
+							"key": "title",
+							"value": "brush teeth",
+							"type": "text"
+						},
+						{
+							"key": "description",
+							"value": "Morning and night",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "https://habitapi.herokuapp.com/api/v1/habits/brush-teeth",
+					"protocol": "https",
+					"host": [
+						"habitapi",
+						"herokuapp",
+						"com"
+					],
+					"path": [
+						"api",
+						"v1",
+						"habits",
+						"brush-teeth"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "View habit",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{access_token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": [
+						{
+							"key": "title",
+							"value": "brush teeth",
+							"type": "text"
+						},
+						{
+							"key": "description",
+							"value": "Morning and night",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "https://habitapi.herokuapp.com/api/v1/habits/brush-teeth",
+					"protocol": "https",
+					"host": [
+						"habitapi",
+						"herokuapp",
+						"com"
+					],
+					"path": [
+						"api",
+						"v1",
+						"habits",
+						"brush-teeth"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Complete habit today",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{access_token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": []
+				},
+				"url": {
+					"raw": "https://habitapi.herokuapp.com/api/v1/habits/brush-teeth/complete",
+					"protocol": "https",
+					"host": [
+						"habitapi",
+						"herokuapp",
+						"com"
+					],
+					"path": [
+						"api",
+						"v1",
+						"habits",
+						"brush-teeth",
+						"complete"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Complete habit BAD ALREADY COMPLETE",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{access_token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": [
+						{
+							"key": "title",
+							"value": "brush teeth",
+							"type": "text"
+						},
+						{
+							"key": "description",
+							"value": "Morning and night",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "https://habitapi.herokuapp.com/api/v1/habits/brush-teeth/complete",
+					"protocol": "https",
+					"host": [
+						"habitapi",
+						"herokuapp",
+						"com"
+					],
+					"path": [
+						"api",
+						"v1",
+						"habits",
+						"brush-teeth",
+						"complete"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Revert habit today",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{access_token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": [
+						{
+							"key": "title",
+							"value": "brush teeth",
+							"type": "text"
+						},
+						{
+							"key": "description",
+							"value": "Morning and night",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "https://habitapi.herokuapp.com/api/v1/habits/brush-teeth/revert",
+					"protocol": "https",
+					"host": [
+						"habitapi",
+						"herokuapp",
+						"com"
+					],
+					"path": [
+						"api",
+						"v1",
+						"habits",
+						"brush-teeth",
+						"revert"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Update habit description and dates",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{access_token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "PATCH",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"description\": \"Twice a day\",\r\n    \"completedDates\": [\"2023-03-20\", \"2023-03-21\"]\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://habitapi.herokuapp.com/api/v1/habits/brush-teeth",
+					"protocol": "https",
+					"host": [
+						"habitapi",
+						"herokuapp",
+						"com"
+					],
+					"path": [
+						"api",
+						"v1",
+						"habits",
+						"brush-teeth"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Replace habit",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{access_token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"title\": \"teeth routine\",\r\n    \"description\": \"Brush and floss, morning and night\",\r\n    \"completedDates\": []\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://habitapi.herokuapp.com/api/v1/habits/brush-teeth",
+					"protocol": "https",
+					"host": [
+						"habitapi",
+						"herokuapp",
+						"com"
+					],
+					"path": [
+						"api",
+						"v1",
+						"habits",
+						"brush-teeth"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "View habit BAD OLD TITLE",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{access_token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"description\": \"Twice a day\",\r\n    \"completedDates\": [\"2023-03-20\", \"2023-03-21\"]\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://habitapi.herokuapp.com/api/v1/habits/brush-teeth",
+					"protocol": "https",
+					"host": [
+						"habitapi",
+						"herokuapp",
+						"com"
+					],
+					"path": [
+						"api",
+						"v1",
+						"habits",
+						"brush-teeth"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Delete habit",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{access_token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "DELETE",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"description\": \"Twice a day\",\r\n    \"completedDates\": [\"2023-03-20\", \"2023-03-21\"]\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://habitapi.herokuapp.com/api/v1/habits/teeth-routine",
+					"protocol": "https",
+					"host": [
+						"habitapi",
+						"herokuapp",
+						"com"
+					],
+					"path": [
+						"api",
+						"v1",
+						"habits",
+						"teeth-routine"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "access_token",
+			"value": "''",
+			"type": "string"
+		}
+	]
+}

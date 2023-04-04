@@ -4,6 +4,7 @@ export const router = express.Router();
 
 const resolveUserController = (req: Request) => req.app.get('container').resolve('UserController')
 
+// GET root of user management
 router.get('/', (req: Request, res: Response) => {
   const links = {
     self: { href: '/user', title: 'User management, including registration and login.' },
@@ -32,7 +33,9 @@ router.get('/', (req: Request, res: Response) => {
 
 })
 
+// POST /register 
 router.post('/register', (req: Request, res: Response, next: NextFunction) => resolveUserController(req).register(req, res, next))
 
+// POST /login
 router.post('/login', (req: Request, res: Response, next: NextFunction) => resolveUserController(req).login(req, res, next))
 

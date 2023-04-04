@@ -16,12 +16,12 @@ const resolveWebhookController = (req: Request) => req.app.get('container').reso
 // Provide req.habit to the route if :title is present in the route path.
 router.param('title', (req: Request, res: Response, next: NextFunction, title: string) => resolveHabitController(req).loadHabit(req, res, next, title))
 
-// GET 
+// GET habits
 router.get('/', (req: Request, res: Response, next: NextFunction) => {
   resolveHabitController(req).findAll(req, res, next)
 })
 
-// POST habit
+// POST habits
 router.post('/', (req: Request, res: Response, next: NextFunction) => resolveHabitController(req).create(req, res, next))
 
 // GET habits/:title

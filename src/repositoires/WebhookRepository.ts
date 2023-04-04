@@ -1,5 +1,5 @@
-import { MongooseRepositoryBase } from './MongooseRepository';
-import { IWebhook, IWebhookModel, WebhookEvent, WebhookModel  } from '../models/WebhookModel';
+import { MongooseRepositoryBase } from './MongooseRepository'
+import { IWebhook, IWebhookModel, WebhookEvent, WebhookModel } from '../models/WebhookModel'
 
 
 /**
@@ -13,7 +13,7 @@ export class WebhookRepository extends MongooseRepositoryBase<IWebhook> {
    * Creates a new instance of the WebhookRepository class.
    *  
    * @param {IWebhookModel} model - The Mongoose model used by the repository.
-  */
+   */
   constructor(model: IWebhookModel = WebhookModel) {
     super(model)
     this.model = model

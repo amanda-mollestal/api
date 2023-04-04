@@ -26,19 +26,11 @@ export class HabitRepository extends MongooseRepositoryBase<IHabit> {
     const habit = await this.getById(habitId)
 
     const date = new Date()
-    console.log(date)
-
     const isoDate = date.toISOString()
-    console.log(isoDate)
-    
-    const dateStr = isoDate.substring(0, 10);
-    console.log(dateStr)
-    const rightFormat = /^\d{4}-\d{2}-\d{2}$/.test(dateStr)
-   
-    
+    const dateStr = isoDate.substring(0, 10)
+
     habit.completedDates.push(dateStr)
     return habit.save()
- 
   }
 
   /**
@@ -52,11 +44,11 @@ export class HabitRepository extends MongooseRepositoryBase<IHabit> {
 
     const date = new Date()
     const isoDate = date.toISOString()
-    const dateStr = isoDate.substring(0, 10);
+    const dateStr = isoDate.substring(0, 10)
 
-    habit.completedDates = habit.completedDates.filter(date => date !== dateStr);
+    habit.completedDates = habit.completedDates.filter(date => date !== dateStr)
 
     return habit.save()
-    
+
   }
 }

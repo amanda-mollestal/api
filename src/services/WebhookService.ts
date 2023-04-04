@@ -50,12 +50,9 @@ export class WebhookService extends MongooseServiceBase<IWebhook> {
             default:
               const err = new Error()
               err.name = 'WebhookEventError'
-              err.message = 'Invalid event. Can be "completed", "reverted", "updated", or a combination of them with a "," separating them.'
               throw err
           }
         })
-
-        console.log(newWebhook.events)
 
         const result = await this.repository.insert(newWebhook)
         return result as IWebhook
@@ -69,14 +66,12 @@ export class WebhookService extends MongooseServiceBase<IWebhook> {
       if(error.code === 11000 || error.name === 'MongoServerError') {
         const err = new Error()
         err.name = 'WebhookDuplicateError'
-        err.message = 'Webhook already exists, please provide a unique url and try again'
         throw err
       }
 
       if(error.errors?.url) {
         const err = new Error()
         err.name = 'WebhookUrlError'
-        err.message = 'Invalid url, please provide a valid url and try again'
         throw err
       }
 

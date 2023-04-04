@@ -29,7 +29,6 @@ export class UserRepository extends MongooseRepositoryBase<IUser> {
 
     const user = await this.model.authentication(username, password)
     return user
-
   }
 
 }

@@ -47,28 +47,12 @@ const habitSchema = new Schema<IHabit>({
   }
 })
 
-
-/*function validateToday(arr: string[]) {
-  return arr.length === new Set(arr).size;
-}*/
-
-/*function validateCompletedDates(arr: string[]) {
-  for (const date of arr) {
-    if (!/^\d{4}-\d{2}-\d{2}$/.test(date)) {
-      return false
-    }
-  }
-  return true
-}*/ 
-
 habitSchema.virtual('id').get(function (this: IHabit) {
   return this._id.toHexString()
 })
 
 habitSchema.pre<IHabit>('save', async function (next) {
   const habit = this
-
-  console.log('pre save hook: ' + habit.completedDates)
 
   // Check if a habit with the same title and ownerId already exists
   const existingHabit = await HabitModel.findOne({ title: habit.title, ownerId: habit.ownerId })
@@ -90,7 +74,6 @@ habitSchema.pre<IHabit>('save', async function (next) {
 
   next()
 })
-
 
 const convertOptions = {
   virtuals: true,
@@ -114,6 +97,6 @@ habitSchema.set('toJSON', convertOptions)
 
 export interface IHabitModel extends Model<IHabit> { }
 
-export const HabitModel: IHabitModel = model<IHabit, IHabitModel>('Habit', habitSchema);
+export const HabitModel: IHabitModel = model<IHabit, IHabitModel>('Habit', habitSchema)
 
 

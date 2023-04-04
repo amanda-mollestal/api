@@ -6,6 +6,7 @@ export const router: Router = express.Router()
 
 const resolveUserController = (req: Request) => req.app.get('container').resolve('UserController')
 
+// GET root
 router.get('/', (req: Request, res: Response) => {
   const links = {
     self: { href: '/', title: 'API entry point' },
@@ -38,7 +39,6 @@ router.get('/', (req: Request, res: Response) => {
     },
     
   }
-
 
   res.json({
     message: 'WELCOME TO THE HABIT TRACKER API',
