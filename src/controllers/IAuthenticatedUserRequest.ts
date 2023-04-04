@@ -8,4 +8,5 @@ export interface AuthenticatedUserRequest extends Request {
   habit?: IHabit;
   body: any;
   headers: any;
+  url: any;
 }
