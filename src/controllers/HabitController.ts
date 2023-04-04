@@ -3,7 +3,7 @@ import { Request, Response, NextFunction } from 'express'
 import { HabitService } from '../services/HabitService'
 import { IHabit } from '../models/HabitModel'
 import { AuthenticatedUserRequest } from './IAuthenticatedUserRequest'
-import { completeLinks, createLinks, deleteLinks, findAllLinks, findLinks, partiallyLinks, undoLinks, updateLinks } from './Links'
+import { completeLinks, createLinks, findAllLinks, findLinks, partiallyLinks, undoLinks, updateLinks } from '../util/Links'
 
 /**
  * Controller class for handling Habit-related HTTP requests.
@@ -30,8 +30,6 @@ export class HabitController {
   async create(req: AuthenticatedUserRequest, res: Response, next: NextFunction): Promise<void> {
     try {
 
-      console.log('KOMMER HIT I CREATE')
-
       const habit: IHabit = {
         title: req.body.title,
         description: req.body.description,
@@ -56,11 +54,7 @@ export class HabitController {
       })
 
     } catch (error) {
-
-      //console.log(error)
-
       
-
       if (error.name === 'ValidationError') {
         next(createError(400, 'Invalid data provided. Make sure to provide a valid title and description. Title: { type: String, required: true, minlength: 1 } Description: { type: String,required: true, minlength: 1 }'))
         return
@@ -176,7 +170,6 @@ export class HabitController {
       return next()
 
     } catch (error) {
-      console.log('habit controller: ' + error)
       if (error.name === 'ValidationError') {
         next(createError(400, error.message))
         return
@@ -209,7 +202,7 @@ export class HabitController {
       }).end()
       return next()
     } catch (error) {
-      console.log(error)
+      next(createError(400, error.message))
       next(error)
     }
   }
@@ -261,11 +254,11 @@ next(error)
 
       const links = partiallyLinks(habitTitle)
 
-      res.status(204).json({
+      res.status(200).json({
         message: 'Habit updated successfully',
         habit: updatedHabit,
         _links: links
-      }).end()
+      })
       return next()
 
     } catch (error) {
@@ -310,7 +303,7 @@ next(error)
           habit: updatedHabit,
           _links: links
         }
-      ).status(204).end()
+      ).status(201)
       return next()
     } catch (error) {
       console.log(error)
@@ -331,17 +324,9 @@ next(error)
   async delete(req: AuthenticatedUserRequest, res: Response, next: NextFunction) {
     try {
       await this.#service.delete(req.habit.id)
-      const habitTitle = req.habit.title.replace(/ /g, '-')
-
-      const links = deleteLinks(habitTitle)
 
       req.habit = null
-
-
-      res.status(204).json({
-        message: 'Habit deleted successfully',
-        _links: links
-      }).end()
+      res.status(204)
     } catch (error) {
       next(error)
     }

@@ -36,24 +36,50 @@ export class WebhookService extends MongooseServiceBase<IWebhook> {
         events: []
       } as IWebhook  
   
-      if(events.length > 0) {
         events.forEach(event => {
-        
-          if (event.toLocaleLowerCase() === 'completed') {
-            newWebhook.events.push(WebhookEvent.COMPLETED)
-          } else if (event.toLocaleLowerCase() === 'reverted') {
-            newWebhook.events.push(WebhookEvent.REVERTED)
-          } else if (event.toLocaleLowerCase() === 'updated') {
-            newWebhook.events.push(WebhookEvent.UPDATED)
+          switch (event.toLowerCase()) {
+            case 'completed':
+              newWebhook.events.push(WebhookEvent.COMPLETED)
+              return
+            case 'reverted':
+              newWebhook.events.push(WebhookEvent.REVERTED)
+              return
+            case 'updated':
+              newWebhook.events.push(WebhookEvent.UPDATED)
+              return
+            default:
+              const err = new Error()
+              err.name = 'WebhookEventError'
+              err.message = 'Invalid event. Can be "completed", "reverted", "updated", or a combination of them with a "," separating them.'
+              throw err
           }
         })
+
+        console.log(newWebhook.events)
+
         const result = await this.repository.insert(newWebhook)
         return result as IWebhook
-      }
+
     } catch (error) {
-      error.name = 'WebhookValidationError'
-      error.message = 'Missing required fields, please provide all required fields and try again'
-      throw error
+
+      if(error.name === 'WebhookEventError') {
+        throw error
+      }
+
+      if(error.code === 11000 || error.name === 'MongoServerError') {
+        const err = new Error()
+        err.name = 'WebhookDuplicateError'
+        err.message = 'Webhook already exists, please provide a unique url and try again'
+        throw err
+      }
+
+      if(error.errors?.url) {
+        const err = new Error()
+        err.name = 'WebhookUrlError'
+        err.message = 'Invalid url, please provide a valid url and try again'
+        throw err
+      }
+
     }
 
   }
@@ -61,18 +87,26 @@ export class WebhookService extends MongooseServiceBase<IWebhook> {
   /**
    * Unregisters a webhook.
    * 
-   * @param {string} webhookId - The id of the webhook to unregister.
+   * @param {string} webhookUrl - The url of the webhook.
    * @param {string} ownerId - The id of the user who owns the webhook.
    * 
    */
-  async unregister (webhookId: string, ownerId: string) {
+  async unregister (webhookUrl: string, ownerId: string) {
 
-    const webhook = await this.repository.getById(webhookId) 
+    const filter = { url: webhookUrl, ownerId: ownerId}
+    const webhook = await this.repository.getOne(filter)
  
-    if (webhook.ownerId !== ownerId) {
-      throw new Error('Unauthorized')
+    if (webhook === null) {
+      const error = new Error()
+      error.name = 'WebhookNotFoundError'
+      throw error
+      
+    } if (webhook.ownerId !== ownerId) {
+      const error = new Error()
+      error.name = 'WebhookUnauthorizedError'
+      throw error
     } else {
-      await this.repository.delete(webhookId)
+      await this.repository.delete(webhook.id)
     }
   } 
 

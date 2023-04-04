@@ -3,7 +3,8 @@ import { IWebhook, WebhookEvent } from '../models/WebhookModel'
 import { AuthenticatedUserRequest } from './IAuthenticatedUserRequest'
 import { Request, Response, NextFunction } from 'express'
 import axios from 'axios'
-import { webhookRegisterLinks } from './Links'
+import { webhookRegisterLinks } from '../util/Links'
+import createError from 'http-errors'
 
 /**
  * Controller class for handling Webhook-related HTTP requests.
@@ -30,7 +31,8 @@ export class WebhookController {
   async registerWebhook(req: AuthenticatedUserRequest, res: Response, next: NextFunction) {
     try {
 
-      const result = await this.#service.register(req.body.url, req.user.id, req.body.events)
+      const eventArr = req.body.events.split(',').map((s: string) => s.trim());
+      const result = await this.#service.register(req.body.url, req.user.id, eventArr)
 
       const links = webhookRegisterLinks
       res.status(201).json({
@@ -39,6 +41,20 @@ export class WebhookController {
         _links: links,
       })
     } catch (error) {
+      console.log(error)
+
+      if (error.name === 'WebhookUrlError') {
+        next(createError(400, error.message))
+      }
+
+      if (error.name === 'WebhookDuplicateError') {
+        next(createError(400, error.message))
+      }
+
+      if (error.name === 'WebhookEventError') {
+        next(createError(400, error.message))
+      }
+
       if(error.name === 'WebhookValidationError' ) {
         error.status = 400
         error.message = error.message
@@ -91,9 +107,16 @@ export class WebhookController {
   async unregisterWebhook(req: AuthenticatedUserRequest, res: Response, next: NextFunction) {
 
     try {
-      await this.#service.unregister(req.body.id, req.user.id)
+      await this.#service.unregister(req.body.url, req.user.id)
       res.status(204).end()
     } catch (error) {
+      if(error.name === 'WebhookNotFoundError' ) {
+        next(createError(404, 'No webhook found with the given URL.'))
+      }
+
+      if (error.name === 'WebhookUnauthorizedError') {
+        next(createError(404, 'Webhook not found.'))
+      }
       next(error)
     }
   }

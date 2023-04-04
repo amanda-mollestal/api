@@ -37,8 +37,8 @@ export const loginLinks = {
       "Authorization": { type: "string", required: true, description: "The access token in the format 'Bearer {access_token}'." }
     },
     body: {
-      id: { type: 'string', required: true, description: 'The id of the webhook to unregister' },
-      url: { type: 'string', required: true, description: 'The url to send the webhook to' }
+      url: { type: 'string', required: true, description: 'The url to send the webhook to' },
+      events: { type: 'string', required: true, description: 'The events to listen for. Can be "completed", "reverted", "updated", or a combination of them with a "," separating them.'}
     }
   },
   webhookUnregister: {
@@ -49,7 +49,7 @@ export const loginLinks = {
       "Authorization": { type: "string", required: true, description: "The access token in the format 'Bearer {access_token}'." }
     },
     body: {
-      id: { type: 'string', required: true, description: 'The id of the webhook to unregister' }
+      url: { type: 'string', required: true, description: 'The url of the webhook to unregister' }
     }
   }
 }
@@ -86,8 +86,8 @@ export const findAllLinks = {
     title: 'Register a webhook for habit events',
     method: 'POST',
     body: {
-      id: { type: 'string', required: true, description: 'The id of the webhook to unregister' },
-      url: { type: 'string', required: true, description: 'The url to send the webhook to' }
+      url: { type: 'string', required: true, description: 'The url to send the webhook to' },
+      events: { type: 'string', required: true, description: 'The events to listen for. Can be "completed", "reverted", "updated", or a combination of them with a "," separating them.'}
     }
   },
   webhookUnregister: {
@@ -95,7 +95,7 @@ export const findAllLinks = {
     title: 'Unregister a webhook',
     method: 'POST',
     body: {
-      id: { type: 'string', required: true, description: 'The id of the webhook to unregister' }
+      url: { type: 'string', required: true, description: 'The url of the webhook to unregister' }
     }
   }
 }
@@ -141,12 +141,6 @@ export const updateLinks = (habitTitle: string) => ({
 
 })
 
-export const deleteLinks = (habitTitle: string) => ({
-    self: { href: `/habits/${habitTitle}`, title: 'Deleted this habit', method: 'DELETE' },
-    getHabits: { href: '/habits', title: 'View all habits' },
-    create: { href: '/habits', title: 'Create a new habit', method: 'POST' }
-
-})
 
 export const webhookRegisterLinks = {
     self: { href: '/habits/webhook/register', title: 'Register a webhook for habit events', method: 'POST' },
@@ -155,7 +149,7 @@ export const webhookRegisterLinks = {
       title: 'Unregister a webhook',
       method: 'POST',
       body: {
-        id: { type: 'string', required: true, description: 'The id of the webhook to unregister' }
+        url: { type: 'string', required: true, description: 'The url of the webhook to unregister' }
     }
   }
 }

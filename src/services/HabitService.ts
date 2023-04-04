@@ -38,7 +38,7 @@ export class HabitService extends MongooseServiceBase<IHabit> {
    * @param {string} habitId - The id of the habit to remove the completed date from.
    * @returns {IHabit} - The habit with the completed date removed.
    */
-  async undoCompletedDate(habitId: string) {
+  async undoCompletedDate(habitId: string): Promise<IHabit> {
     const habit = await this.repository.undoCompletedDate(habitId)
     return habit
   }

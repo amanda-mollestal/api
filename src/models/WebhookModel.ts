@@ -18,6 +18,7 @@ const webhookSchema = new Schema<IWebhook>({
     type: String,
     required: true,
     trim: true,
+    unique: true,
     validate: [validator.isURL, 'The URL you entered is not a valid URL'],
   },
   ownerId: {

@@ -4,7 +4,7 @@ import { Request, Response, NextFunction } from 'express'
 import { UserService } from '../services/UserService'
 import { UserModel, IUser } from '../models/UserModel'
 import { AuthenticatedUserRequest } from './IAuthenticatedUserRequest'
-import { registerLinks, loginLinks } from './Links'
+import { registerLinks, loginLinks } from '../util/Links'
 
 /**
  * Controller class for handling User-related HTTP requests.
@@ -41,9 +41,7 @@ export class UserController {
       })
     } catch (error) {
       if (error.name === 'ValidationError') {
-        error.status = 400
-        error.message = 'Invalid data provided. Make sure to provide a valid email, username and password.'
-        next(error)
+        next(createError(400, 'Invalid data provided. Make sure to provide a valid email, username and password.'))
       }
       next(error)
     }
@@ -66,9 +64,7 @@ export class UserController {
       })
 
     } catch (error) {
-      error.status = 401
-      error.message = 'Credentials invalid or not provided.'
-      next(error)
+      next(createError(401, 'Credentials invalid or not provided.'))
     }
   }
 
@@ -82,32 +78,31 @@ export class UserController {
   async validateJwt(req: AuthenticatedUserRequest, res: Response, next: NextFunction) {
     try {
 
-      console.log('KOMMER HIT I VALIDATEJWT')
+      
       const [authenticationScheme, token] = req.headers.authorization?.split(' ')
 
       if (authenticationScheme !== 'Bearer') {
         throw new Error('Invalid authentication scheme.')
       }
 
-
       const user = await this.#service.validateJwt(token)
 
-      console.log('kommer hit i validatejwt')
       req.user = user
       next()
     } catch (error) {
 
+      if(req.url.trim() === '/webhook/register') {
+        next(createError(401, 'You must be authenticated to register a webhook'))
+      }
+
       if (error.name === 'JsonWebTokenError' || error.name === 'TypeError') {
-        error.status = 401
-        error.message = 'Access token invalid or not provided.'
-        next(error)
+        next(createError(401, 'Access token invalid or not provided.'))
       }
 
       if (error.name === 'TokenExpiredError') {
-        error.status = 401
-        error.message = 'Access token invalid or not provided.'
-        next(error)
+        next(createError(401, 'Access token invalid or not provided.'))
       }
+
       next(error)
     }
 
