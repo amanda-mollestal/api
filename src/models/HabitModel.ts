@@ -68,6 +68,8 @@ habitSchema.virtual('id').get(function (this: IHabit) {
 habitSchema.pre<IHabit>('save', async function (next) {
   const habit = this
 
+  console.log('pre save hook: ' + habit.completedDates)
+
   // Check if a habit with the same title and ownerId already exists
   const existingHabit = await HabitModel.findOne({ title: habit.title, ownerId: habit.ownerId })
 

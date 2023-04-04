@@ -176,6 +176,7 @@ export class HabitController {
       return next()
 
     } catch (error) {
+      console.log('habit controller: ' + error)
       if (error.name === 'ValidationError') {
         next(createError(400, error.message))
         return

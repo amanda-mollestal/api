@@ -27,7 +27,7 @@ export class HabitRepository extends MongooseRepositoryBase<IHabit> {
 
     const date = new Date()
     const dateStr = date.toLocaleDateString()
-  
+    console.log(dateStr)
     habit.completedDates.push(dateStr)
     return habit.save()
   }
