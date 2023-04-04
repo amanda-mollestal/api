@@ -91,21 +91,15 @@ export class UserController {
       next()
     } catch (error) {
 
-      console.log(error)
-
       if(req.url?.trim() === '/webhook/register') {
-        next(createError(401, 'You must be authenticated to register a webhook'))
+        return next(createError(401, 'You must be authenticated to register a webhook'))
       }
 
-      if (error.name === 'JsonWebTokenError' || error.name === 'TypeError') {
-        next(createError(401, 'Access token invalid or not provided.'))
+      if (error.name === 'JsonWebTokenError' || error.name === 'TypeError' || error.name === 'TokenExpiredError') {
+        return next(createError(401, 'Access token invalid or not provided.'))
       }
 
-      if (error.name === 'TokenExpiredError') {
-        next(createError(401, 'Access token invalid or not provided.'))
-      }
-
-      next(createError(401, 'Access token invalid or not provided.'))
+      return next(createError(401, 'Access token invalid or not provided.'))
     }
 
 
