@@ -27,9 +27,16 @@ export class HabitRepository extends MongooseRepositoryBase<IHabit> {
 
     const date = new Date()
     const dateStr = date.toLocaleDateString()
+    const rightFormat = /^\d{4}-\d{2}-\d{2}$/.test(dateStr)
+    console.log(rightFormat)
     console.log(dateStr)
-    habit.completedDates.push(dateStr)
-    return habit.save()
+    if(rightFormat){
+      habit.completedDates.push(dateStr)
+      return habit.save()
+    } else {
+      console.log('wrong format')
+    }
+  
   }
 
   /**
