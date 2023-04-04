@@ -30,13 +30,15 @@ export class HabitController {
   async create(req: AuthenticatedUserRequest, res: Response, next: NextFunction): Promise<void> {
     try {
 
+      console.log('KOMMER HIT I CREATE')
+
       const habit: IHabit = {
         title: req.body.title,
         description: req.body.description,
         ownerId: req.user.id,
       } as IHabit
 
-      if (req.body.completedDates) {
+      if (req.body.completedDates && req.body.completedDates.length > 0) {
         habit.completedDates = req.body.completedDates
       }
 
@@ -55,13 +57,26 @@ export class HabitController {
 
     } catch (error) {
 
+      //console.log(error)
+
+      
+
+      if (error.name === 'ValidationError') {
+        next(createError(400, 'Invalid data provided. Make sure to provide a valid title and description. Title: { type: String, required: true, minlength: 1 } Description: { type: String,required: true, minlength: 1 }'))
+        return
+      }
       if (error.name === 'ExistingHabitError') {
         next(createError(400, 'Habit with that title already exists'))
         return
       }
 
-      if (error.code === 11000) {
-        next(createError(400, 'Habit with that title already exists'))
+      if (error.name === 'DuplicateCompletedDatesError') {
+        next(createError(400, error.message))
+        return
+      }
+
+      if(error.message) {
+        next(createError(400, error.message))
         return
       }
       next(error)
@@ -162,7 +177,7 @@ export class HabitController {
 
     } catch (error) {
       if (error.name === 'ValidationError') {
-        next(createError(400, 'This habit has already been completed today.'))
+        next(createError(400, error.message))
         return
       }
       next(error)

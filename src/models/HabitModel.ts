@@ -28,21 +28,20 @@ const habitSchema = new Schema<IHabit>({
   },
   completedDates: {
     type: [String],
-    unique: true,
     validate: [
       {
         validator: function (arr: string[]) {
           // Check that all strings in the array are unique
           return arr.length === new Set(arr).size
         },
-        message: 'You have already completed this habit today'
+        message: 'Habit has already been completed on this date.'
       },
       {
         validator: function (arr: string[]) {
           // Check that all strings in the array have the format "YYYY-MM-DD"
           return arr.every(date => /^\d{4}-\d{2}-\d{2}$/.test(date))
         },
-        message: 'All completedDates must have the format "YYYY-MM-DD'
+        message: 'All completedDates must have the format YYYY-MM-DD.'
       }
     ]
   }
@@ -76,6 +75,15 @@ habitSchema.pre<IHabit>('save', async function (next) {
     const err = new Error('A habit with the same title already exists')
     err.name = 'ExistingHabitError'
     return next(err)
+  }
+
+  if (habit.completedDates && habit.completedDates.length > 1) {
+    const set = new Set(habit.completedDates)
+    if (set.size !== habit.completedDates.length) {
+      const err = new Error('The completedDates array cannot contain duplicate values.')
+      err.name = 'DuplicateCompletedDatesError'
+      return next(err)
+    }
   }
 
   next()

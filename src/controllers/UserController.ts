@@ -81,14 +81,18 @@ export class UserController {
    */
   async validateJwt(req: AuthenticatedUserRequest, res: Response, next: NextFunction) {
     try {
+
+      console.log('KOMMER HIT I VALIDATEJWT')
       const [authenticationScheme, token] = req.headers.authorization?.split(' ')
 
       if (authenticationScheme !== 'Bearer') {
         throw new Error('Invalid authentication scheme.')
       }
 
+
       const user = await this.#service.validateJwt(token)
 
+      console.log('kommer hit i validatejwt')
       req.user = user
       next()
     } catch (error) {
