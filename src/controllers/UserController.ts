@@ -91,7 +91,7 @@ export class UserController {
       next()
     } catch (error) {
 
-      if(req.url.trim() === '/webhook/register') {
+      if(req.url?.trim() === '/webhook/register') {
         next(createError(401, 'You must be authenticated to register a webhook'))
       }
 
